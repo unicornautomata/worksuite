@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,11 +13,9 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // Make sure Role is an enum with USER, ADMIN
+    private Role role;
 
-    // ✅ Constructors
-    public User() {
-    }
+    public User() {}
 
     public User(String username, String password, Role role) {
         this.username = username;
@@ -26,7 +23,6 @@ public class User {
         this.role = role;
     }
 
-    // ✅ Getters
     public Long getId() {
         return id;
     }
@@ -43,7 +39,6 @@ public class User {
         return role;
     }
 
-    // ✅ Setters
     public void setId(Long id) {
         this.id = id;
     }
