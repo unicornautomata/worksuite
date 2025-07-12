@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setAuth, isAuthenticated } from "../utils/auth"; // ✅ Import setAuth and isAuthenticated
+import { setAuth } from "../utils/auth"; // ✅ Import setAuth
 import "../App.css";
 
 function Login() {
@@ -8,12 +8,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated()) {
-      navigate("/todo"); // ✅ Redirect if already logged in
-    }
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,8 +20,8 @@ function Login() {
       });
 
       if (res.ok) {
-        setAuth(username, password); // ✅ Store credentials
-        navigate("/todo"); // ✅ Redirect to correct route
+        setAuth(username, password); // ✅ Store auth properly
+        navigate("optimistic-creativity-production-e88d.up.railway.app");
       } else {
         setError("Invalid credentials. Please try again.");
       }
