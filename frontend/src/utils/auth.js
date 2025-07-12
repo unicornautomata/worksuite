@@ -1,19 +1,21 @@
+// src/utils/auth.js
 
-export const isLoggedIn = () => {
-  return localStorage.getItem("username") && localStorage.getItem("password");
+export const setAuth = (username, password) => {
+  localStorage.setItem("username", username);
+  localStorage.setItem("password", password);
 };
 
-export const logout = () => {
+export const clearAuth = () => {
   localStorage.removeItem("username");
   localStorage.removeItem("password");
+};
+
+export const isAuthenticated = () => {
+  return !!localStorage.getItem("username") && !!localStorage.getItem("password");
 };
 
 export const getAuthHeader = () => {
   const username = localStorage.getItem("username");
   const password = localStorage.getItem("password");
-  if (!username || !password) return {};
-  const token = btoa(`${username}:${password}`);
-  return {
-    Authorization: `Basic ${token}`,
-  };
+  return "Basic " + btoa(`${username}:${password}`);
 };
