@@ -21,7 +21,7 @@ function Login() {
 
       if (res.ok) {
         setAuth(username, password); // ✅ Store auth properly
-        navigate("optimistic-creativity-production-e88d.up.railway.app");
+        navigate("/");
       } else {
         setError("Invalid credentials. Please try again.");
       }
