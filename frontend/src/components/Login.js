@@ -21,7 +21,7 @@ function Login() {
 
       if (res.ok) {
         setAuth(username, password); // ✅ Store auth properly
-        navigate("/todos");
+        navigate("/todo");
       } else {
         setError("Invalid credentials. Please try again.");
       }
