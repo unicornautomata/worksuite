@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setAuth } from "../utils/auth"; // ✅ Import setAuth
 import "../App.css";
 
 function Login() {
@@ -19,7 +20,7 @@ function Login() {
       });
 
       if (res.ok) {
-        localStorage.setItem("auth", JSON.stringify({ username, password }));
+        setAuth(username, password); // ✅ Store auth properly
         navigate("/todos");
       } else {
         setError("Invalid credentials. Please try again.");
