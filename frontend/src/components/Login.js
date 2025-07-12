@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { setAuth } from "../utils/auth"; // ✅ Import setAuth
+import { setAuth, isAuthenticated } from "../utils/auth"; // ✅ Import setAuth and isAuthenticated
 import "../App.css";
 
 function Login() {
@@ -8,6 +8,12 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/todo"); // ✅ Redirect if already logged in
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,8 +26,8 @@ function Login() {
       });
 
       if (res.ok) {
-        setAuth(username, password); // ✅ Store auth properly
-        navigate("/todo");
+        setAuth(username, password); // ✅ Store credentials
+        navigate("/todo"); // ✅ Redirect to correct route
       } else {
         setError("Invalid credentials. Please try again.");
       }
