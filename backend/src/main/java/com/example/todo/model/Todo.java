@@ -11,7 +11,7 @@ public class Todo {
     private String title;
     private boolean completed;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

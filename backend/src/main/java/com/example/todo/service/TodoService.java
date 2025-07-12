@@ -1,11 +1,10 @@
 package com.example.todo.service;
 
-import com.example.todo.model.Role;
+import com.example.todo.dto.TodoRequest;
 import com.example.todo.model.Todo;
 import com.example.todo.model.User;
 import com.example.todo.repository.TodoRepository;
 import com.example.todo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -14,60 +13,40 @@ import java.util.List;
 @Service
 public class TodoService {
 
-    @Autowired
-    private TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public TodoService(TodoRepository todoRepository, UserRepository userRepository) {
+        this.todoRepository = todoRepository;
+        this.userRepository = userRepository;
+    }
 
-    // Get current authenticated user
-    private User getCurrentUser() {
+    public Todo createTodo(TodoRequest todoRequest) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-    }
+        User user = userRepository.findByUsername(username).orElseThrow();
 
-    public List<Todo> getTodosForCurrentUser() {
-        User user = getCurrentUser();
-
-        if (user.getRole() == Role.ADMIN) {
-            return todoRepository.findAll(); // Admin sees everything
-        } else {
-            return todoRepository.findByUser(user); // Normal user sees own todos
-        }
-    }
-
-    public Todo addTodo(Todo todo) {
-        User user = getCurrentUser();
+        Todo todo = new Todo();
+        todo.setTitle(todoRequest.getTitle());
+        todo.setCompleted(false);
         todo.setUser(user);
+
         return todoRepository.save(todo);
     }
 
-    public Todo updateTodo(Long id, Todo updatedTodo) {
-        Todo existingTodo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
-
-        User user = getCurrentUser();
-
-        if (!existingTodo.getUser().getId().equals(user.getId()) && user.getRole() != Role.ADMIN) {
-            throw new RuntimeException("You don't have permission to update this todo");
+    public List<Todo> getTodosForCurrentUser(User currentUser) {
+        if (currentUser.getRole().name().equals("ADMIN")) {
+            return todoRepository.findAll();
         }
+        return todoRepository.findByUser(currentUser);
+    }
 
-        existingTodo.setTitle(updatedTodo.getTitle());
-        existingTodo.setCompleted(updatedTodo.isCompleted());
-        return todoRepository.save(existingTodo);
+    public Todo updateTodo(Long id, TodoRequest request) {
+        Todo existing = todoRepository.findById(id).orElseThrow();
+        existing.setTitle(request.getTitle());
+        return todoRepository.save(existing);
     }
 
     public void deleteTodo(Long id) {
-        Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
-
-        User user = getCurrentUser();
-
-        if (!todo.getUser().getId().equals(user.getId()) && user.getRole() != Role.ADMIN) {
-            throw new RuntimeException("You don't have permission to delete this todo");
-        }
-
-        todoRepository.delete(todo);
+        todoRepository.deleteById(id);
     }
 }
