@@ -1,12 +1,12 @@
 package com.example.todo.controller;
 
 import com.example.todo.dto.TodoRequest;
-import com.example.todo.model.Todo;
+import com.example.todo.dto.TodoResponse;
 import com.example.todo.model.User;
-import com.example.todo.repository.UserRepository;
 import com.example.todo.service.TodoService;
+import com.example.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,25 +20,23 @@ public class TodoController {
     private TodoService todoService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
-    public List<Todo> getAll() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username).orElseThrow();
-        return todoService.getTodosForCurrentUser(user);
+    public List<TodoResponse> getAll(Authentication authentication) {
+        User currentUser = userService.getUserByUsername(authentication.getName());
+        return todoService.getTodosForCurrentUser(currentUser);
     }
 
     @PostMapping
-    public Todo create(@RequestBody TodoRequest todoRequest) {
-        return todoService.createTodo(todoRequest);
+    public TodoResponse create(@RequestBody TodoRequest request, Authentication authentication) {
+        User currentUser = userService.getUserByUsername(authentication.getName());
+        return todoService.createTodo(request, currentUser);
     }
 
     @PutMapping("/{id}")
-    public Todo update(@PathVariable Long id, @RequestBody TodoRequest todoRequest) {
-        // You can enhance this with permission checks
-        Todo todo = todoService.updateTodo(id, todoRequest);
-        return todo;
+    public TodoResponse update(@PathVariable Long id, @RequestBody TodoRequest request) {
+        return todoService.updateTodo(id, request);
     }
 
     @DeleteMapping("/{id}")
