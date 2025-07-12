@@ -18,6 +18,7 @@ function TodoPage() {
       if (!response.ok) throw new Error("Failed to fetch todos");
 
       const data = await response.json();
+      console.log("Fetched todos:", data); // ✅ Add this line
       setTodos(data);
     } catch (error) {
       console.error("Error fetching todos:", error);
