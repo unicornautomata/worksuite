@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 function TodoPage() {
   const navigate = useNavigate();
-
   const [todos, setTodos] = useState([]);
 
   const username = localStorage.getItem('username');
@@ -23,7 +22,6 @@ function TodoPage() {
       if (!response.ok) throw new Error('Failed to fetch todos');
 
       const data = await response.json();
-      console.log('Fetched todos:', data); // For debugging
       setTodos(data);
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -33,6 +31,43 @@ function TodoPage() {
   useEffect(() => {
     fetchTodos();
   }, [fetchTodos]);
+
+  const addTodo = async (title) => {
+    try {
+      const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
+        },
+        body: JSON.stringify({ title, completed: false }),
+      });
+
+      if (!response.ok) throw new Error('Failed to add todo');
+      fetchTodos();
+    } catch (error) {
+      console.error('Error adding todo:', error);
+    }
+  };
+
+  const editTodo = async (id, updatedTitle) => {
+    try {
+      const todoToUpdate = todos.find((t) => t.id === id);
+      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
+        },
+        body: JSON.stringify({ ...todoToUpdate, title: updatedTitle }),
+      });
+
+      if (!response.ok) throw new Error('Failed to edit todo');
+      fetchTodos();
+    } catch (error) {
+      console.error('Error editing todo:', error);
+    }
+  };
 
   const toggleTodo = async (todo) => {
     try {
@@ -46,7 +81,6 @@ function TodoPage() {
       });
 
       if (!response.ok) throw new Error('Failed to toggle todo');
-
       fetchTodos();
     } catch (error) {
       console.error('Error toggling todo:', error);
@@ -63,7 +97,6 @@ function TodoPage() {
       });
 
       if (!response.ok) throw new Error('Failed to delete todo');
-
       fetchTodos();
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -71,9 +104,7 @@ function TodoPage() {
   };
 
   const handleLogoff = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    localStorage.removeItem('role');
+    localStorage.clear();
     navigate('/login');
   };
 
@@ -83,11 +114,30 @@ function TodoPage() {
         <h2>My To-Do List</h2>
         <button onClick={handleLogoff}>Logoff</button>
       </div>
+
+      {/* Add Todo Form */}
+      {isAdmin && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const title = e.target.elements.title.value.trim();
+            if (title) {
+              addTodo(title);
+              e.target.reset();
+            }
+          }}
+          style={{ marginBottom: '1rem' }}
+        >
+          <input type="text" name="title" placeholder="Enter new task..." required />
+          <button type="submit">Add</button>
+        </form>
+      )}
+
       <TodoList
         todos={todos}
-        fetchTodos={fetchTodos}
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodo}
+        editTodo={editTodo}
         isAdmin={isAdmin}
       />
     </div>
