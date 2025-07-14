@@ -1,67 +1,63 @@
 import React, { useState } from 'react';
 
-function TodoList({ todos, toggleTodo, deleteTodo, editTodo, isAdmin }) {
-  const [editId, setEditId] = useState(null);
-  const [editValue, setEditValue] = useState('');
+function TodoList({ todos, isAdmin, editTodo, deleteTodo, toggleTodo }) {
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState('');
+
+  const startEdit = (todo) => {
+    setEditingId(todo.id);
+    setEditingText(todo.title);
+  };
+
+  const handleEditSubmit = (e, id) => {
+    e.preventDefault();
+    if (editingText.trim()) {
+      editTodo(id, editingText);
+      setEditingId(null);
+      setEditingText('');
+    }
+  };
 
   return (
     <ul style={{ listStyle: 'none', padding: 0 }}>
-      {todos.map((todo) => (
-        <li
-          key={todo.id}
-          style={{
-            marginBottom: '10px',
-            backgroundColor: '#f0f0f0',
-            padding: '10px',
-            borderRadius: '5px',
-          }}
-        >
-          {/* Edit Mode */}
-          {editId === todo.id ? (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                editTodo(todo.id, editValue);
-                setEditId(null);
-                setEditValue('');
-              }}
-            >
+      {todos.map(todo => (
+        <li key={todo.id} style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '10px',
+          borderBottom: '1px solid #ccc'
+        }}>
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => toggleTodo(todo)}
+            style={{ marginRight: '10px' }}
+          />
+
+          {editingId === todo.id ? (
+            <form onSubmit={(e) => handleEditSubmit(e, todo.id)} style={{ flexGrow: 1 }}>
               <input
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                required
+                type="text"
+                value={editingText}
+                onChange={(e) => setEditingText(e.target.value)}
+                style={{ width: '100%' }}
               />
-              <button type="submit">Save</button>
-              <button type="button" onClick={() => setEditId(null)}>Cancel</button>
             </form>
           ) : (
-            <>
-              <span
-                onClick={() => toggleTodo(todo)}
-                style={{
-                  textDecoration: todo.completed ? 'line-through' : 'none',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  marginRight: '10px',
-                }}
-              >
-                {todo.title}
-              </span>
+            <span style={{
+              flexGrow: 1,
+              textDecoration: todo.completed ? 'line-through' : 'none'
+            }}>
+              {todo.title}
+            </span>
+          )}
 
-              {/* Admin-only Controls */}
-              {isAdmin && (
-                <>
-                  <button onClick={() => {
-                    setEditId(todo.id);
-                    setEditValue(todo.title);
-                  }}>
-                    Edit
-                  </button>
-                  <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '5px' }}>
-                    Delete
-                  </button>
-                </>
+          {isAdmin && (
+            <>
+              {editingId !== todo.id && (
+                <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>Edit</button>
               )}
+              <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
             </>
           )}
         </li>

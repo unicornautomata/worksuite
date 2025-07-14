@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function TodoPage() {
   const navigate = useNavigate();
   const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');
 
   const username = localStorage.getItem('username');
   const password = localStorage.getItem('password');
@@ -20,7 +21,6 @@ function TodoPage() {
       });
 
       if (!response.ok) throw new Error('Failed to fetch todos');
-
       const data = await response.json();
       setTodos(data);
     } catch (error) {
@@ -32,7 +32,10 @@ function TodoPage() {
     fetchTodos();
   }, [fetchTodos]);
 
-  const addTodo = async (title) => {
+  const handleAddTodo = async (e) => {
+    e.preventDefault();
+    if (!newTodo.trim()) return;
+
     try {
       const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
         method: 'POST',
@@ -40,36 +43,54 @@ function TodoPage() {
           'Content-Type': 'application/json',
           'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
-        body: JSON.stringify({ title, completed: false }),
+        body: JSON.stringify({ title: newTodo, completed: false }),
       });
 
       if (!response.ok) throw new Error('Failed to add todo');
+
+      setNewTodo('');
       fetchTodos();
     } catch (error) {
       console.error('Error adding todo:', error);
     }
   };
 
-  const editTodo = async (id, updatedTitle) => {
+  const handleEditTodo = async (id, updatedTitle) => {
     try {
-      const todoToUpdate = todos.find((t) => t.id === id);
+      const todo = todos.find(t => t.id === id);
       const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
-        body: JSON.stringify({ ...todoToUpdate, title: updatedTitle }),
+        body: JSON.stringify({ ...todo, title: updatedTitle }),
       });
 
-      if (!response.ok) throw new Error('Failed to edit todo');
+      if (!response.ok) throw new Error('Failed to update todo');
       fetchTodos();
     } catch (error) {
       console.error('Error editing todo:', error);
     }
   };
 
-  const toggleTodo = async (todo) => {
+  const handleDeleteTodo = async (id) => {
+    try {
+      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to delete todo');
+      fetchTodos();
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+    }
+  };
+
+  const handleToggleTodo = async (todo) => {
     try {
       const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
         method: 'PUT',
@@ -87,58 +108,37 @@ function TodoPage() {
     }
   };
 
-  const deleteTodo = async (id) => {
-    try {
-      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': 'Basic ' + btoa(username + ':' + password),
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete todo');
-      fetchTodos();
-    } catch (error) {
-      console.error('Error deleting todo:', error);
-    }
-  };
-
   const handleLogoff = () => {
     localStorage.clear();
     navigate('/login');
   };
 
   return (
-    <div className="todo-page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="todo-page" style={{ padding: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h2>My To-Do List</h2>
         <button onClick={handleLogoff}>Logoff</button>
       </div>
 
-      {/* Add Todo Form */}
       {isAdmin && (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const title = e.target.elements.title.value.trim();
-            if (title) {
-              addTodo(title);
-              e.target.reset();
-            }
-          }}
-          style={{ marginBottom: '1rem' }}
-        >
-          <input type="text" name="title" placeholder="Enter new task..." required />
-          <button type="submit">Add</button>
+        <form onSubmit={handleAddTodo} style={{ marginBottom: '1rem' }}>
+          <input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            placeholder="Enter new task"
+            style={{ padding: '0.5rem', width: '70%' }}
+          />
+          <button type="submit" style={{ marginLeft: '1rem', padding: '0.5rem 1rem' }}>Add</button>
         </form>
       )}
 
       <TodoList
         todos={todos}
-        toggleTodo={toggleTodo}
-        deleteTodo={deleteTodo}
-        editTodo={editTodo}
         isAdmin={isAdmin}
+        editTodo={handleEditTodo}
+        deleteTodo={handleDeleteTodo}
+        toggleTodo={handleToggleTodo}
       />
     </div>
   );
