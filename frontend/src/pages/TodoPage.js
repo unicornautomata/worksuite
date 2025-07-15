@@ -99,8 +99,9 @@ function TodoPage() {
       },
       body: JSON.stringify({ ...todo, completed: todo.completed }),
     });
-
+    console.log(response)
     if (!response.ok) throw new Error('Failed to toggle todo');
+    
     fetchTodos(); // Refresh after update
   } catch (error) {
     console.error('Error toggling todo:', error);
