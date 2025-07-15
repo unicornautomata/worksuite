@@ -90,6 +90,7 @@ function TodoPage() {
 
   const handleToggleTodo = async (todo) => {
   try {
+    console.log("✅ Current completed:", todo.completed);
     const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
       method: 'PUT',
       headers: {
