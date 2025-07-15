@@ -4,7 +4,7 @@ import "./Navbar.css";
 
 const Navbar = ({ user, onLogout }) => {
   const navigate = useNavigate();
-
+  const username = localStorage.getItem('username');
   const handleLogout = () => {
     onLogout();
     navigate("/login");
@@ -18,7 +18,7 @@ const Navbar = ({ user, onLogout }) => {
       <div className="navbar-links">
         {user ? (
           <>
-            const username = localStorage.getItem('username');
+
             <span className="navbar-user">Hello, {username}</span>
             <button className="navbar-logout" onClick={handleLogout}>
               Logout
