@@ -89,22 +89,22 @@ function TodoPage() {
   };
 
   const handleToggleTodo = async (todo) => {
-    try {
-      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(username + ':' + password),
-        },
-        body: JSON.stringify({ ...todo, completed: !todo.completed }),
-      });
+  try {
+    const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(username + ':' + password),
+      },
+      body: JSON.stringify({ ...todo, completed: !todo.completed }),
+    });
 
-      if (!response.ok) throw new Error('Failed to toggle todo');
-      fetchTodos();
-    } catch (error) {
-      console.error('Error toggling todo:', error);
-    }
-  };
+    if (!response.ok) throw new Error('Failed to toggle todo');
+    fetchTodos(); // Refresh after update
+  } catch (error) {
+    console.error('Error toggling todo:', error);
+  }
+};
 
   const handleLogoff = () => {
     localStorage.clear();
