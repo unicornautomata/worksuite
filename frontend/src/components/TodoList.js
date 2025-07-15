@@ -18,16 +18,13 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
     }
   };
 
-  const handleDoneClick = async (todo) => {
-    console.log("Marking todo as done:", todo.id); // Debug log
+  const handleToggleClick = async (todo) => {
+    console.log("Toggling todo:", todo.id, "Current status:", todo.completed);
     try {
-      // Create a new todo object with toggled completion status
       const updatedTodo = { ...todo, completed: !todo.completed };
-      console.log("Current completed status:", todo.completed); // ✅ log before toggle
-      console.log("New completed status will be:", !todo.completed); // ✅ log new value
       await toggleTodo(updatedTodo);
     } catch (error) {
-      console.error("Error marking todo as done:", error);
+      console.error("Error toggling todo status:", error);
     }
   };
 
@@ -52,19 +49,20 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
           </span>
 
           <div style={{ display: 'flex', gap: '10px', marginLeft: '10px' }}>
-            {!todo.completed && editingId !== todo.id && (
+            {editingId !== todo.id && (
               <button
-                onClick={() => handleDoneClick(todo)}
+                onClick={() => handleToggleClick(todo)}
                 style={{
-                  backgroundColor: '#4CAF50',
+                  backgroundColor: todo.completed ? '#ff9800' : '#4CAF50',
                   color: 'white',
                   border: 'none',
                   padding: '5px 10px',
                   borderRadius: '3px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  minWidth: '80px'
                 }}
               >
-                Done
+                {todo.completed ? 'Undo' : 'Done'}
               </button>
             )}
 
