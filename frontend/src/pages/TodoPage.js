@@ -10,6 +10,7 @@ function TodoPage() {
   const username = localStorage.getItem('username');
   const password = localStorage.getItem('password');
   const role = localStorage.getItem('role');
+
   const fetchTodos = useCallback(async () => {
     try {
       const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
@@ -89,24 +90,22 @@ function TodoPage() {
   };
 
   const handleToggleTodo = async (todo) => {
-  try {
-    console.log("✅ Current completed:", todo.completed);
-    const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(username + ':' + password),
-      },
-      body: JSON.stringify({ ...todo, completed: todo.completed }),
-    });
-    console.log(response)
-    if (!response.ok) throw new Error('Failed to toggle todo');
+    try {
+      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
+        },
+        body: JSON.stringify({ ...todo, completed: todo.completed }),
+      });
 
-    fetchTodos(); // Refresh after update
-  } catch (error) {
-    console.error('Error toggling todo:', error);
-  }
-};
+      if (!response.ok) throw new Error('Failed to toggle todo');
+      fetchTodos();
+    } catch (error) {
+      console.error('Error toggling todo:', error);
+    }
+  };
 
   const handleLogoff = () => {
     localStorage.clear();
@@ -114,13 +113,14 @@ function TodoPage() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  <h2>{role === "ADMIN" ? "To Do List (Global)" : "My To Do List"}</h2>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    <span className="navbar-user">Hello, {username}</span>
-    <button onClick={handleLogoff}>Logoff</button>
-  </div>
-</div>
+    <div className="todo-page" style={{ padding: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <h2>{role === "ADMIN" ? "To Do List (Global)" : "My To Do List"}</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span className="navbar-user">Hello, {username}</span>
+          <button onClick={handleLogoff}>Logoff</button>
+        </div>
+      </div>
 
       <form onSubmit={handleAddTodo} style={{ marginBottom: '1rem' }}>
         <input
