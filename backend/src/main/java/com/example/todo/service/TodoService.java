@@ -45,6 +45,7 @@ public class TodoService {
     public TodoResponse updateTodo(Long id, TodoRequest request) {
         Todo existing = todoRepository.findById(id).orElseThrow();
         existing.setTitle(request.getTitle());
+        existing.setCompleted(request.isCompleted());  // Add this line
         Todo updated = todoRepository.save(existing);
         return new TodoResponse(updated.getId(), updated.getTitle(), updated.isCompleted());
     }
