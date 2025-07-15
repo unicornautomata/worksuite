@@ -18,7 +18,8 @@ const Navbar = ({ user, onLogout }) => {
       <div className="navbar-links">
         {user ? (
           <>
-            <span className="navbar-user">Hello, {user.username}</span>
+            const username = localStorage.getItem('username');
+            <span className="navbar-user">Hello, {username}</span>
             <button className="navbar-logout" onClick={handleLogout}>
               Logout
             </button>
