@@ -33,7 +33,7 @@ if (reslogin.ok) {
 
       if (res.ok) {
         //const userInfo = await res.json();
-        console.log(userInfo);
+        //console.log(userInfo);
         //setAuth(username, password, userInfo.role); // ✅ Store auth properly
         navigate("/");
       } else {
