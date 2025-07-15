@@ -33,7 +33,7 @@ function Login() {
 if (reslogin.ok) {
   const data = await reslogin.json();
   setAuth(username, password, data.role); // ✅ Save role
-  navigate("/", { replace: true });
+  //navigate("/", { replace: true });
 }
 
     try {
