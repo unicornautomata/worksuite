@@ -21,15 +21,13 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
   return (
     <ul style={{ listStyle: 'none', padding: 0 }}>
       {todos.map(todo => (
-        <li
-          key={todo.id}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '10px',
-            borderBottom: '1px solid #ccc'
-          }}
-        >
+        <li key={todo.id} style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '10px',
+          borderBottom: '1px solid #ccc'
+        }}>
+          {/* ✅ Moved checkbox outside form */}
           <input
             type="checkbox"
             checked={todo.completed}
@@ -38,12 +36,17 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
           />
 
           {editingId === todo.id ? (
-            <form onSubmit={(e) => handleEditSubmit(e, todo.id)} style={{ flexGrow: 1 }}>
+            <form
+              onSubmit={(e) => handleEditSubmit(e, todo.id)}
+              style={{ flexGrow: 1 }}
+              onClick={(e) => e.stopPropagation()} // ✅ Prevent checkbox click from being blocked
+            >
               <input
                 type="text"
                 value={editingText}
                 onChange={(e) => setEditingText(e.target.value)}
                 style={{ width: '100%' }}
+                autoFocus
               />
             </form>
           ) : (
@@ -53,22 +56,15 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
                 textDecoration: todo.completed ? 'line-through' : 'none'
               }}
             >
-              {todo.title}{' '}
-              {todo.completed && (
-                <span style={{ color: 'green', fontWeight: 'bold' }}>[Completed]</span>
-              )}
+              {todo.title}
             </span>
           )}
 
           <>
             {editingId !== todo.id && (
-              <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>
-                Edit
-              </button>
+              <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>Edit</button>
             )}
-            <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>
-              Delete
-            </button>
+            <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
           </>
         </li>
       ))}
