@@ -9,7 +9,7 @@ function TodoPage() {
 
   const username = localStorage.getItem('username');
   const password = localStorage.getItem('password');
-  
+  const role = localStorage.getItem('role');
   const fetchTodos = useCallback(async () => {
     try {
       const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
@@ -101,7 +101,7 @@ function TodoPage() {
     });
     console.log(response)
     if (!response.ok) throw new Error('Failed to toggle todo');
-    
+
     fetchTodos(); // Refresh after update
   } catch (error) {
     console.error('Error toggling todo:', error);
@@ -116,7 +116,7 @@ function TodoPage() {
   return (
     <div className="todo-page" style={{ padding: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2>My To-Do List</h2>
+        <h2>{role === "admin" ? "To Do List (Global)" : "My To Do List"}</h2>
         <button onClick={handleLogoff}>Logoff</button>
       </div>
 
