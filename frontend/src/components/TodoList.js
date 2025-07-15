@@ -25,7 +25,8 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
           display: 'flex',
           alignItems: 'center',
           padding: '10px',
-          borderBottom: '1px solid #ccc'
+          borderBottom: '1px solid #ccc',
+          backgroundColor: todo.completed ? '#f5f5f5' : 'transparent'
         }}>
           <input
             type="checkbox"
@@ -46,7 +47,9 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
           ) : (
             <span style={{
               flexGrow: 1,
-              textDecoration: todo.completed ? 'line-through' : 'none'
+              textDecoration: todo.completed ? 'line-through' : 'none',
+              color: todo.completed ? '#888' : '#333',
+              fontStyle: todo.completed ? 'italic' : 'normal'
             }}>
               {todo.title}
             </span>
