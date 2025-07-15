@@ -13,6 +13,7 @@ function Login() {
     e.preventDefault();
 
     const reslogin = await fetch("https://todo-production-40cc.up.railway.app/api/auth/login", {
+      method: "POST", 
   headers: {
     Authorization: "Basic " + btoa(`${username}:${password}`),
   },
