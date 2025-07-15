@@ -97,7 +97,7 @@ function TodoPage() {
         'Content-Type': 'application/json',
         'Authorization': 'Basic ' + btoa(username + ':' + password),
       },
-      body: JSON.stringify({ ...todo, completed: !todo.completed }),
+      body: JSON.stringify({ ...todo, completed: todo.completed }),
     });
 
     if (!response.ok) throw new Error('Failed to toggle todo');
