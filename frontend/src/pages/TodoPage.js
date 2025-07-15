@@ -9,7 +9,7 @@ function TodoPage() {
 
   const username = localStorage.getItem('username');
   const password = localStorage.getItem('password');
-  const role = localStorage.getItem('role');
+  
   const fetchTodos = useCallback(async () => {
     try {
       const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
