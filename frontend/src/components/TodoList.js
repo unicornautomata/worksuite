@@ -23,6 +23,8 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
     try {
       // Create a new todo object with toggled completion status
       const updatedTodo = { ...todo, completed: !todo.completed };
+      console.log("Current completed status:", todo.completed); // ✅ log before toggle
+      console.log("New completed status will be:", !todo.completed); // ✅ log new value
       await toggleTodo(updatedTodo);
     } catch (error) {
       console.error("Error marking todo as done:", error);
