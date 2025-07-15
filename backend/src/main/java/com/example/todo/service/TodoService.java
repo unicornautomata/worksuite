@@ -39,15 +39,15 @@ public class TodoService {
         todo.setCompleted(false);
         todo.setUser(user);
         Todo saved = todoRepository.save(todo);
-        return new TodoResponse(saved.getId(), saved.getTitle(), saved.isCompleted());
+        return new TodoResponse(saved.getId(), saved.getTitle(), saved.isCompleted(), saved.getUser().getUsername());
     }
 
     public TodoResponse updateTodo(Long id, TodoRequest request) {
         Todo existing = todoRepository.findById(id).orElseThrow();
         existing.setTitle(request.getTitle());
-        existing.setCompleted(request.isCompleted());  // Add this line
+        existing.setCompleted(request.isCompleted());
         Todo updated = todoRepository.save(existing);
-        return new TodoResponse(updated.getId(), updated.getTitle(), updated.isCompleted());
+        return new TodoResponse(updated.getId(), updated.getTitle(), updated.isCompleted(), updated.getUser().getUsername());
     }
 
     public void deleteTodo(Long id) {

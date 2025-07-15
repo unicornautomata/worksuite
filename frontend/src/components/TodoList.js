@@ -47,24 +47,30 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
           >
             {todo.title}
           </span>
-  //  <ul style={{ listStyle: 'none', padding: 0 }}>
-  //    {todos.map(todo => (
-  //      <li key={todo.id} style={{
-  //        display: 'flex',
-  //        alignItems: 'center',
-  //        padding: '10px',
-  //        borderBottom: '1px solid #ccc',
-  //        backgroundColor: todo.completed ? '#f5f5f5' : 'transparent'
-  //      }}>
-  //        <span
-  //          style={{
-  //            flexGrow: 1,
-  //            textDecoration: todo.completed ? 'line-through' : 'none',
-  //            color: todo.completed ? '#888' : '#333'
-  //          }}
-  //        >
-  //          {todo.username}
-  //        </span>
+
+          {/* 
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            {todos.map(todo => (
+              <li key={todo.id} style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '10px',
+                borderBottom: '1px solid #ccc',
+                backgroundColor: todo.completed ? '#f5f5f5' : 'transparent'
+              }}>
+                <span
+                  style={{
+                    flexGrow: 1,
+                    textDecoration: todo.completed ? 'line-through' : 'none',
+                    color: todo.completed ? '#888' : '#333'
+                  }}
+                >
+                  {todo.username}
+                </span>
+              </li>
+            ))}
+          </ul>
+          */}
 
           <div style={{ display: 'flex', gap: '10px', marginLeft: '10px' }}>
             {editingId !== todo.id && (
