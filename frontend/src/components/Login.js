@@ -9,10 +9,16 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  if (username && password) {
-    navigate("/", { replace: true }); // ✅ Redirect to home if already logged in
-  }
-}, [navigate]);
+  // ✅ Redirect if already logged in
+    useEffect(() => {
+      const storedUsername = localStorage.getItem("username");
+      const storedPassword = localStorage.getItem("password");
+      const storedRole = localStorage.getItem("role");
+
+      if (storedUsername && storedPassword && storedRole) {
+        navigate("/", { replace: true });
+      }
+    }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
