@@ -116,7 +116,8 @@ function TodoPage() {
   return (
     <div className="todo-page" style={{ padding: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2>{role === "admin" ? "To Do List (Global)" : "My To Do List"}</h2>
+        <h2>{role === "ADMIN" ? "To Do List (Global)" : "My To Do List"}</h2>
+        <span className="navbar-user">Hello, {username}</span>
         <button onClick={handleLogoff}>Logoff</button>
       </div>
 
