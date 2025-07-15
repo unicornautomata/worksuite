@@ -114,12 +114,13 @@ function TodoPage() {
   };
 
   return (
-    <div className="todo-page" style={{ padding: '1rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2>{role === "ADMIN" ? "To Do List (Global)" : "My To Do List"}</h2>
-        <span className="navbar-user">Hello, {username}</span>
-        <button onClick={handleLogoff}>Logoff</button>
-      </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+  <h2>{role === "ADMIN" ? "To Do List (Global)" : "My To Do List"}</h2>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <span className="navbar-user">Hello, {username}</span>
+    <button onClick={handleLogoff}>Logoff</button>
+  </div>
+</div>
 
       <form onSubmit={handleAddTodo} style={{ marginBottom: '1rem' }}>
         <input
