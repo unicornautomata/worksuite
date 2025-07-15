@@ -16,6 +16,9 @@ function TodoItem({ todo, onToggle, onDelete, isAdmin }) {
       <span className={`todo-title ${todo.completed ? 'completed' : ''}`}>
         {todo.title}
       </span>
+      {isAdmin && todo.username && (
+        <span className="todo-username"> — {todo.username}</span>
+      )}
 
       {isAdmin && (
         <button className="delete-btn" onClick={() => onDelete(todo.id)}>

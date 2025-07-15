@@ -29,7 +29,7 @@ public class TodoService {
         }
 
         return todos.stream()
-                .map(todo -> new TodoResponse(todo.getId(), todo.getTitle(), todo.isCompleted()))
+                .map(todo -> new TodoResponse(todo.getId(), todo.getTitle(), todo.isCompleted(), todo.getUser().getUsername()))
                 .collect(Collectors.toList());
     }
 
