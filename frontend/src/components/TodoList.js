@@ -41,7 +41,7 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
   handleEditSubmit={handleEditSubmit}
   onToggle={handleToggleClick}
   onDelete={deleteTodo}
-  isAdmin={todo.username == "admin"} // ✅ infer admin by presence of username
+  isAdmin={todo.role === "admin"} // ✅ infer admin by presence of username
 />
       ))}
     </ul>
