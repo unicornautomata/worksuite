@@ -21,7 +21,7 @@ function Login() {
 
       if (res.ok) {
         const userInfo = await res.json();
-        console.log(userInfo.role);
+        console.log(userInfo);
         setAuth(username, password, userInfo.role); // ✅ Store auth properly
         navigate("/");
       } else {
