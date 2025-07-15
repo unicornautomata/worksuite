@@ -19,7 +19,7 @@ function Login() {
 });
 
 if (reslogin.ok) {
-  const data = await resreslogin.json();
+  const data = await reslogin.json();
   setAuth(username, password, data.role); // ✅ Save role
   navigate("/");
 }
