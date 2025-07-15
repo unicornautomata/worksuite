@@ -12,6 +12,18 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    const reslogin = await fetch("https://todo-production-40cc.up.railway.app/api/auth/login", {
+  headers: {
+    Authorization: "Basic " + btoa(`${username}:${password}`),
+  },
+});
+
+if (reslogin.ok) {
+  const data = await resreslogin.json();
+  setAuth(username, password, data.role); // ✅ Save role
+  navigate("/");
+}
+
     try {
       const res = await fetch("https://todo-production-40cc.up.railway.app/api/todos", {
         headers: {
@@ -20,9 +32,9 @@ function Login() {
       });
 
       if (res.ok) {
-        const userInfo = await res.json();
+        //const userInfo = await res.json();
         console.log(userInfo);
-        setAuth(username, password, userInfo.role); // ✅ Store auth properly
+        //setAuth(username, password, userInfo.role); // ✅ Store auth properly
         navigate("/");
       } else {
         setError("Invalid credentials. Please try again.");

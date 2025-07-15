@@ -44,7 +44,23 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login() {
-        return "Login successful!";
-    }
+    public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader) {
+      String base64Credentials = authHeader.substring("Basic ".length()).trim();
+      byte[] credDecoded = java.util.Base64.getDecoder().decode(base64Credentials);
+      String credentials = new String(credDecoded);
+      final String[] values = credentials.split(":", 2);
+
+      String username = values[0];
+
+      User user = userRepository.findByUsername(username).orElse(null);
+      if (user == null) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid user"));
+        }
+
+        return ResponseEntity.ok(Map.of(
+            "message", "Login successful!",
+            "username", user.getUsername(),
+            "role", user.getRole().name()
+            ));
+      }
 }
