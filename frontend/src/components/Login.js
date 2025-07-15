@@ -19,7 +19,7 @@ function Login() {
         navigate("/", { replace: true });
       }
     }, [navigate]);
-
+  console.log(navigate);
   const handleLogin = async (e) => {
     e.preventDefault();
 
