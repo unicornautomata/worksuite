@@ -9,6 +9,11 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  if (username && password) {
+    navigate("/", { replace: true }); // ✅ Redirect to home if already logged in
+  }
+}, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
