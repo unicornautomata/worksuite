@@ -4,12 +4,12 @@ import TodoItem from './TodoItem';
 function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState('');
-
+  const role = localStorage.getItem('role');
   const startEdit = (todo) => {
     setEditingId(todo.id);
     setEditingText(todo.title);
   };
-
+  
   const handleEditSubmit = (e, id) => {
     e.preventDefault();
     if (editingText.trim()) {
@@ -41,7 +41,7 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
   handleEditSubmit={handleEditSubmit}
   onToggle={handleToggleClick}
   onDelete={deleteTodo}
-  isAdmin={todo.role === "admin"} // ✅ infer admin by presence of username
+  isAdmin={role === "admin"} // ✅ infer admin by presence of username
 />
       ))}
     </ul>

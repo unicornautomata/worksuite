@@ -24,7 +24,7 @@ function TodoPage() {
     } catch (error) {
       console.error('Error fetching todos:', error);
     }
-  }, [username, password, role]);
+  }, [username, password]);
 
   useEffect(() => {
     fetchTodos();
