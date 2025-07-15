@@ -20,7 +20,8 @@ function Login() {
       });
 
       if (res.ok) {
-        setAuth(username, password); // ✅ Store auth properly
+        const userInfo = await res.json();
+        setAuth(username, password, userInfo.role); // ✅ Store auth properly
         navigate("/");
       } else {
         setError("Invalid credentials. Please try again.");
