@@ -21,13 +21,15 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
   return (
     <ul style={{ listStyle: 'none', padding: 0 }}>
       {todos.map(todo => (
-        <li key={todo.id} style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '10px',
-          borderBottom: '1px solid #ccc',
-          backgroundColor: todo.completed ? '#f5f5f5' : 'transparent'
-        }}>
+        <li
+          key={todo.id}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '10px',
+            borderBottom: '1px solid #ccc'
+          }}
+        >
           <input
             type="checkbox"
             checked={todo.completed}
@@ -45,21 +47,28 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
               />
             </form>
           ) : (
-            <span style={{
-              flexGrow: 1,
-              textDecoration: todo.completed ? 'line-through' : 'none',
-              color: todo.completed ? '#888' : '#333',
-              fontStyle: todo.completed ? 'italic' : 'normal'
-            }}>
-              {todo.title}
+            <span
+              style={{
+                flexGrow: 1,
+                textDecoration: todo.completed ? 'line-through' : 'none'
+              }}
+            >
+              {todo.title}{' '}
+              {todo.completed && (
+                <span style={{ color: 'green', fontWeight: 'bold' }}>[Completed]</span>
+              )}
             </span>
           )}
 
           <>
             {editingId !== todo.id && (
-              <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>Edit</button>
+              <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>
+                Edit
+              </button>
             )}
-            <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
+            <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>
+              Delete
+            </button>
           </>
         </li>
       ))}
