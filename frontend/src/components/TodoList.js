@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function TodoList({ todos, isAdmin, editTodo, deleteTodo, toggleTodo }) {
+function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState('');
 
@@ -52,14 +52,12 @@ function TodoList({ todos, isAdmin, editTodo, deleteTodo, toggleTodo }) {
             </span>
           )}
 
-          {isAdmin && (
-            <>
-              {editingId !== todo.id && (
-                <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>Edit</button>
-              )}
-              <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
-            </>
-          )}
+          <>
+            {editingId !== todo.id && (
+              <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>Edit</button>
+            )}
+            <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
+          </>
         </li>
       ))}
     </ul>

@@ -9,8 +9,6 @@ function TodoPage() {
 
   const username = localStorage.getItem('username');
   const password = localStorage.getItem('password');
-  const role = localStorage.getItem('role');
-  const isAdmin = role === 'ADMIN';
 
   const fetchTodos = useCallback(async () => {
     try {
@@ -120,22 +118,19 @@ function TodoPage() {
         <button onClick={handleLogoff}>Logoff</button>
       </div>
 
-      {isAdmin && (
-        <form onSubmit={handleAddTodo} style={{ marginBottom: '1rem' }}>
-          <input
-            type="text"
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
-            placeholder="Enter new task"
-            style={{ padding: '0.5rem', width: '70%' }}
-          />
-          <button type="submit" style={{ marginLeft: '1rem', padding: '0.5rem 1rem' }}>Add</button>
-        </form>
-      )}
+      <form onSubmit={handleAddTodo} style={{ marginBottom: '1rem' }}>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Enter new task"
+          style={{ padding: '0.5rem', width: '70%' }}
+        />
+        <button type="submit" style={{ marginLeft: '1rem', padding: '0.5rem 1rem' }}>Add</button>
+      </form>
 
       <TodoList
         todos={todos}
-        isAdmin={isAdmin}
         editTodo={handleEditTodo}
         deleteTodo={handleDeleteTodo}
         toggleTodo={handleToggleTodo}
