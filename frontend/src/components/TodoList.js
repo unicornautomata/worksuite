@@ -25,27 +25,12 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
           display: 'flex',
           alignItems: 'center',
           padding: '10px',
-          borderBottom: '1px solid #ccc',
-          backgroundColor: todo.completed ? '#f5f5f5' : 'transparent'
+          borderBottom: '1px solid #ccc'
         }}>
-          {/* Checkbox - now properly clickable */}
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => toggleTodo(todo)}
-            style={{ 
-              marginRight: '10px',
-              cursor: 'pointer',
-              width: '18px',
-              height: '18px'
-            }}
-          />
-
           {editingId === todo.id ? (
-            <form 
-              onSubmit={(e) => handleEditSubmit(e, todo.id)} 
+            <form
+              onSubmit={(e) => handleEditSubmit(e, todo.id)}
               style={{ flexGrow: 1 }}
-              onClick={(e) => e.stopPropagation()}
             >
               <input
                 type="text"
@@ -56,43 +41,32 @@ function TodoList({ todos, editTodo, deleteTodo, toggleTodo }) {
               />
             </form>
           ) : (
-            <span 
+            <span
               style={{
                 flexGrow: 1,
-                textDecoration: todo.completed ? 'line-through' : 'none',
-                color: todo.completed ? '#888' : '#333',
-                cursor: 'pointer',
-                userSelect: 'none'
+                textDecoration: todo.completed ? 'line-through' : 'none'
               }}
-              onClick={() => toggleTodo(todo)} // Allow clicking text to toggle too
             >
               {todo.title}
             </span>
           )}
 
-          <div style={{ display: 'flex', marginLeft: '10px' }}>
-            {editingId !== todo.id ? (
-              <>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    startEdit(todo);
-                  }}
-                  style={{ marginRight: '10px' }}
-                >
-                  Edit
-                </button>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteTodo(todo.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </>
-            ) : null}
-          </div>
+          <>
+            {!todo.completed && editingId !== todo.id && (
+              <button
+                onClick={() => toggleTodo(todo)}
+                style={{ marginLeft: '10px' }}
+              >
+                Done
+              </button>
+            )}
+
+            {editingId !== todo.id && (
+              <button onClick={() => startEdit(todo)} style={{ marginLeft: '10px' }}>Edit</button>
+            )}
+
+            <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
+          </>
         </li>
       ))}
     </ul>
