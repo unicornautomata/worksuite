@@ -2,7 +2,7 @@ import React from 'react';
 import './LandingPage.css';
 import logo from '../assets/logo.png';
 import heroImage from '../assets/image.png';
-
+import { Link } from 'react-router-dom';
 const LandingPage = () => {
   return (
     <div>
@@ -15,13 +15,13 @@ const LandingPage = () => {
           </div>
         </div>
         <nav>
-          <a href="#">Product</a>
-          <a href="#">Solutions</a>
-          <a href="#">Resources</a>
-          <a href="#">Pricing</a>
-          <a href="/login" className="btn outline">Login</a>
-          <a href="/signup" className="btn">Get Started</a>
-        </nav>
+  <Link to="/product">Product</Link>
+  <Link to="/solutions">Solutions</Link>
+  <Link to="/resources">Resources</Link>
+  <Link to="/pricing">Pricing</Link>
+  <Link to="/login" className="btn outline">Login</Link>
+  <Link to="/signup" className="btn">Get Started</Link>
+</nav>
       </header>
 
       <main className="hero">
