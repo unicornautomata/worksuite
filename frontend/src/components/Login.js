@@ -63,7 +63,7 @@ function Login() {
       });
 
       if (res.ok) {
-        navigate("/", { replace: true });
+        navigate("/todo", { replace: true });
       } else {
         setError("Invalid credentials. Please try again.");
       }
