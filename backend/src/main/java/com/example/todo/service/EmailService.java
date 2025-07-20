@@ -15,7 +15,7 @@ public class EmailService {
     public void sendVerificationEmail(String toEmail, String token) {
         String subject = "Verify your account";
         String body = "Hello,\n\nPlease verify your account by clicking the link below:\n\n"
-                + "http://localhost:3000/verify-email?token=" + token + "\n\nThis link will expire in 24 hours.\n\nThank you!";
+                + "https://optimistic-creativity-production-e88d.up.railway.app/verify-email?token=" + token + "\n\nThis link will expire in 24 hours.\n\nThank you!";
 
         MimeMessage message = mailSender.createMimeMessage();
 
