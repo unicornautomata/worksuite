@@ -1,0 +1,36 @@
+/* Login.css */
+
+.auth-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.resend-link {
+  background: none;
+  border: none;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-left: 8px;
+  font-size: 1em;
+}
+
+.resend-success {
+  color: green;
+  margin-left: 10px;
+}

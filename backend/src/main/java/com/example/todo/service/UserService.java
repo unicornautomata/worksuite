@@ -16,14 +16,19 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(String username, String password, Role role) {
+    public User registerUser(String username, String password, String email, Role role) {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new RuntimeException("Username already taken");
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Email already registered");
         }
 
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
         user.setRole(role);
         return userRepository.save(user);
     }

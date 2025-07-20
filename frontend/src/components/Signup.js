@@ -5,24 +5,37 @@ import "../App.css";
 function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
+   const isValidEmail = (email) => {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+   const handleSignup = async (e) => {
+   e.preventDefault();
+
+   // ✅ Check email validity
+   if (!isValidEmail(email)) {
+     setMessage("Please enter a valid email address.");
+     return;
+   }
+
 
     try {
-      const res = await fetch("https://todo-production-40cc.up.railway.app/api/auth/signup", {
+      //const res = await fetch("https://todo-production-40cc.up.railway.app/api/auth/signup", {
+      const res = await fetch("http://localhost:8080/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, email }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setMessage("Account created! Redirecting to login...");
-        setTimeout(() => navigate("/login"), 1500);
+        setMessage("Account created! A verification email has been sent to your email. Please check your inbox. Redirecting to login...");
+        setTimeout(() => navigate("/login"), 4500);
       } else {
         setMessage(data.message || "Signup failed.");
       }
@@ -42,6 +55,13 @@ function Signup() {
           value={username}
           required
           onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          required
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
