@@ -1,18 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import TodoPage from './pages/TodoPage';
-import VerifyEmail from './pages/VerifyEmail'; // ✅ Add this line
+import VerifyEmail from './pages/VerifyEmail';
 import './App.css';
 
-function App() {
+function AppWrapper() {
+  const location = useLocation();
+  const hideHeaderRoutes = ['/']; // Hide header on landing page
+
   return (
-    <Router>
-      <Header />
+    <>
+      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
       <div className="app-container">
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -29,6 +32,14 @@ function App() {
           />
         </Routes>
       </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppWrapper />
     </Router>
   );
 }
