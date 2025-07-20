@@ -14,7 +14,7 @@ function TodoPage() {
   const fetchTodos = useCallback(async () => {
     try {
       //const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
-      const response = await fetch('http://localhost:8080/api/todos', {
+      const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
         headers: {
           'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
@@ -38,7 +38,7 @@ function TodoPage() {
 
     try {
       //const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
-      const response = await fetch('http://localhost:8080/api/todos', {
+      const response = await fetch('https://todo-production-40cc.up.railway.app/api/todos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ function TodoPage() {
     try {
       const todo = todos.find(t => t.id === id);
       //const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
-      const response = await fetch(`http://localhost:8080/api/todos/${id}`, {
+      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ function TodoPage() {
   const handleDeleteTodo = async (id) => {
     try {
       //const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
-      const response = await fetch(`http://localhost:8080/api/todos/${id}`, {
+      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': 'Basic ' + btoa(username + ':' + password),
@@ -96,7 +96,7 @@ function TodoPage() {
   const handleToggleTodo = async (todo) => {
     try {
       //const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
-      const response = await fetch(`http://localhost:8080/api/todos/${todo.id}`, {
+      const response = await fetch(`https://todo-production-40cc.up.railway.app/api/todos/${todo.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
