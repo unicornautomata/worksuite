@@ -1,12 +1,18 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import './LandingPage.css';
 import logo from '../assets/logo.png';
 import heroImage from '../assets/image.png';
 import { Link } from 'react-router-dom';
 const LandingPage = () => {
   return (
-    <div>
-      <header>
+    <motion.div
+      className="landing-page"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.2, ease: 'easeOut' }}
+    >
+      <header className="landing-header">
         <div className="logo-section">
           <img src={logo} alt="WorkSuite Logo" className="logo-icon" />
           <div>
@@ -15,22 +21,34 @@ const LandingPage = () => {
           </div>
         </div>
         <nav>
-  <Link to="/product">Product</Link>
-  <Link to="/solutions">Solutions</Link>
-  <Link to="/resources">Resources</Link>
-  <Link to="/pricing">Pricing</Link>
-  <Link to="/login" className="btn outline">Login</Link>
-  <Link to="/signup" className="btn">Get Started</Link>
-</nav>
+          <a href="#">Product</a>
+          <a href="#">Solutions</a>
+          <a href="#">Resources</a>
+          <a href="#">Pricing</a>
+          <a href="/login" className="btn outline">Login</a>
+          <a href="/signup" className="btn">Get Started</a>
+        </nav>
       </header>
 
       <main className="hero">
-        <img src={heroImage} alt="Team Working" className="hero-img" />
-        <div className="hero-text">
+        <motion.img
+          src={heroImage}
+          alt="Team Working"
+          className="hero-img"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
+        />
+        <motion.div
+          className="hero-text"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: 'easeOut', delay: 0.6 }}
+        >
           <h2>🚀 Introducing <span className="highlight">WorkSuite</span> — Your Team’s New Favorite Workspace!</h2>
           <p>
             Tired of messy task lists, confusing threads, and scattered project updates?
-            WorkSuite is here to bring clarity, structure, and collaboration back to your workflow.<br />
+            WorkSuite is here to bring clarity, structure, and collaboration back to your workflow.
             ✅ Create and assign tasks with ease<br />
             ✅ Track progress across teams in real-time<br />
             ✅ Organize projects, deadlines, and ticketing in one place<br />
@@ -42,9 +60,9 @@ const LandingPage = () => {
             Try WorkSuite today.
           </p>
           <a href="/signup" className="btn big">Get Started</a>
-        </div>
+        </motion.div>
       </main>
-    </div>
+    </motion.div>
   );
 };
 
