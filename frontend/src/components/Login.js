@@ -29,7 +29,8 @@ function Login() {
     setResendSent(false);
 
     try {
-      const reslogin = await fetch("http://localhost:8080/api/auth/login", {
+      //const reslogin = await fetch("http://localhost:8080/api/auth/login", {
+      const reslogin = await fetch("https://todo-production-40cc.up.railway.app/api/auth/login", {
         method: "POST",
         headers: {
           Authorization: "Basic " + btoa(`${username}:${password}`),
@@ -55,7 +56,7 @@ function Login() {
 
       setAuth(username, password, loginData.role);
 
-      const res = await fetch("http://localhost:8080/api/todos", {
+      const res = await fetch("https://todo-production-40cc.up.railway.app/api/todos", {
         headers: {
           Authorization: "Basic " + btoa(`${username}:${password}`),
         },
@@ -74,7 +75,7 @@ function Login() {
 
   const handleResendVerification = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/auth/resend-verification", {
+      const res = await fetch("https://todo-production-40cc.up.railway.app/api/auth/resend-verification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

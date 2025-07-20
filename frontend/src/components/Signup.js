@@ -25,7 +25,7 @@ function Signup() {
 
     try {
       //const res = await fetch("https://todo-production-40cc.up.railway.app/api/auth/signup", {
-      const res = await fetch("http://localhost:8080/api/auth/signup", {
+      const res = await fetch("https://todo-production-40cc.up.railway.app/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, email }),

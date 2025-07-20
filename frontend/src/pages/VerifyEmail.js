@@ -15,7 +15,7 @@ const VerifyEmail = () => {
 
       try {
         console.log(`Token from URL: ${token}`);
-        const response = await fetch(`http://localhost:8080/api/auth/verify?token=${token}`, {
+        const response = await fetch(`https://todo-production-40cc.up.railway.app/api/auth/verify?token=${token}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
