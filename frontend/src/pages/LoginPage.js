@@ -10,7 +10,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate('/'); // ✅ Auto-redirect if already logged in
+      navigate('/todo'); // ✅ Auto-redirect if already logged in
     }
   }, [navigate]);
 
