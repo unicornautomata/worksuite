@@ -16,7 +16,7 @@ function LoginPage() {
 
   return (
     <div className="auth-page">
-      <h2>Login</h2>
+      
       <Login />
     </div>
   );
