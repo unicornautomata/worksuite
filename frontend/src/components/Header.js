@@ -8,7 +8,7 @@ function Header() {
   const location = useLocation();
 
   const handleLogoff = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate('/login');
   };
 
