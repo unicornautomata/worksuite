@@ -1,12 +1,14 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logo from '../assets/logo.png';
 import './Header.css';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
+  // Hide header on landing page
+  if (location.pathname === '/') return null;
 
   const handleLogoff = () => {
     localStorage.removeItem('token');
@@ -22,7 +24,7 @@ function Header() {
   return (
     <header className="header">
       <div className="logo-section">
-        <img src="/assets/logo.png" alt="WorkSuite Logo" className="logo-icon" />
+        <img src={logo} alt="WorkSuite Logo" className="logo-icon" />
         <div>
           <h1 className="brand-name">WorkSuite</h1>
           <p className="tagline">Where teams get work done.</p>
@@ -30,17 +32,15 @@ function Header() {
       </div>
 
       <nav>
-
-          <div className="user-menu">
-            <button className="btn outline" onClick={handleLogoff}>Logoff</button>
-            <div className="user-avatar" onClick={handleProfileClick} title={username}>
-              <img
-                src={`https://api.dicebear.com/7.x/identicon/svg?seed=${username}`}
-                alt="user"
-              />
-            </div>
+        <div className="user-menu">
+          <button className="btn outline" onClick={handleLogoff}>Logoff</button>
+          <div className="user-avatar" onClick={handleProfileClick} title={username}>
+            <img
+              src={`https://api.dicebear.com/7.x/identicon/svg?seed=${username}`}
+              alt="user"
+            />
           </div>
-
+        </div>
       </nav>
     </header>
   );
