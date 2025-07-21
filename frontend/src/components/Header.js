@@ -30,6 +30,8 @@ function Header() {
           <p className="tagline">Where teams get work done.</p>
         </div>
       </div>
+      // Determine if nav should be hidden
+      const hideNav = location.pathname === '/login' || location.pathname === '/signup';
 
       <nav>
         <div className="user-menu">
