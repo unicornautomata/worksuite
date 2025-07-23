@@ -14,8 +14,10 @@
 }
 
 .logo-icon {
+  width: 60px;              /* Add this line */
   height: 60px;
   margin-right: 1rem;
+  object-fit: contain;
 }
 
 .brand-name {
