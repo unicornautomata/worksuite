@@ -1,0 +1,30 @@
+curl -X POST -H "Content-Type: application/json"  -d "{\"username\":\"user1\",\"password\":\"pass123\",\"email\":\"blaslomibao@yahoo.com\"}"  http://localhost:8080/api/auth/signup
+curl -X POST -u user1:xblaster -H "Content-Type: application/json" -d "{\"title\":\"Write blog post\"}" http://localhost:8081/api/todos
+curl -X POST -H "Content-Type: application/json"  -d "{\"username\":\"user1\"}"  http://localhost:8080/api/auth/checkuser
+
+curl -X POST -u user1:xblaster -H "Content-Type: application/json"   http://localhost:8081/api/auth/login >>c:\todo_app_dev\login.txt
+
+curl -X POST -H "Content-Type: application/json"  -d "{\"email\":\"blaslomibao@gmail.com\"}"  http://localhost:8080/api/auth/checkemail
+
+curl -u user1:xblaster -X POST "http://localhost:8081/api/users/1/upload-picture"   -H "Content-Type: application/json"   -d "{\"pictureBase64\":\"$(Get-Content -Raw picture.txt)\"}"
+
+$base64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\Users\blas_\Pictures\blas1.png"))
+curl --user user1:xblaster -X POST "http://localhost:8081/api/users/1/upload-picture"   -H "Content-Type: application/json"   -d "{\"pictureBase64\":\"$base64\"}"
+
+curl.exe -u user1:xblaster -X POST "http://localhost:8081/api/users/1/upload-picture"   -H "Content-Type: application/json"   -d "{\"pictureBase64\":\"$base64\"}"
+
+
+C:\Users\blas_\Pictures\Camera Roll\WIN_20240904_13_55_24_Pro.jpg
+
+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
+
+curl -X POST -H "Content-Type: application/json"  -d "{\"username\":\"user1\",\"password\":\"xblaster\",\"fullname\":\"Blas\",\"address\":\"Basista\",\"email\":\"blaslomibao@yahoo.com\"}"  http://localhost:8080/api/auth/updateprofile
+
+curl -X POST http://localhost:8081/api/auth/updatepassword -H "Content-Type: application/json" -d '{"username":"testuser","token":"PASTE_RESET_TOKEN_HERE","newPassword":"MyNewSecurePassword123"}'
+
+curl -X POST http://localhost:8081/api/auth/updatepassword -H "Content-Type: application/json" -d "{\"email\":\"blaslomibao@gmail.com\",\"token\":\"c31162c0-cf5a-46f6-a967-e52f96867500\",\"newPassword\":\"zblaster\"}"
+
+
+python sqli_scanner.py --url "http://localhost:8080/api/auth/login" --method POST --json "{\"username\":\"user1\",\"password\":\"xblaster\"}" --out results --debug
+
+python sqli_scanner.py --url "http://localhost:8080/api/auth/signup-vuln"  --method POST   --json '{"username":"test","password":"123","email":"test@test.com"}'   --out results --debug
