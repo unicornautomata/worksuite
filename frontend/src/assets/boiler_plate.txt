@@ -1,0 +1,275 @@
+<!-- ============================
+ Full-Stack Technical Spec Boilerplate
+ Stack: Java Spring Boot (API) + React.js (SPA)
+ Author: {{AUTHOR}}
+ Version: 1.0
+================================= -->
+
+<h1>📘 {{PROJECT_NAME}} — Full-Stack Technical Specification</h1>
+<p><strong>Date:</strong> {{DATE}} | <strong>Owner:</strong> {{OWNER}} | <strong>Version:</strong> {{SPEC_VERSION}}</p>
+
+<hr>
+
+<h2>1. Overview</h2>
+<p><strong>Purpose:</strong> {{BRIEF_ONE_LINE_VALUE_PROPOSITION}}</p>
+<p><strong>Primary Users:</strong> {{USER_PERSONAS}}</p>
+<p><strong>Business Goals:</strong> {{BUSINESS_GOALS}}</p>
+<p><strong>Scope (MVP):</strong> {{SCOPE_MVP}}</p>
+
+<h3>1.1 High-Level Architecture</h3>
+<ul>
+  <li><strong>Frontend:</strong> React.js (Vite/CRA), React Router, State Management (Redux Toolkit/Zustand), Form (React Hook Form), UI (MUI/Tailwind).</li>
+  <li><strong>Backend:</strong> Spring Boot (Web, Data JPA, Security), Validation, MapStruct (optional), Lombok.</li>
+  <li><strong>Database:</strong> PostgreSQL (dev/prod) / H2 (test).</li>
+  <li><strong>Build & Run:</strong> Maven/Gradle, Docker, docker-compose.</li>
+  <li><strong>Observability:</strong> Spring Actuator, central logging, metrics.</li>
+</ul>
+
+<pre><code>// Logical flow
+[React SPA] --HTTP/JSON--> [Spring Boot API] --JPA--> [PostgreSQL]
+             &lt;--JWT/HTTP--             |--Actuator/Logs--> [Monitoring]</code></pre>
+
+<hr>
+
+<h2>2. Requirements</h2>
+<h3>2.1 Functional</h3>
+<ul>
+  <li>[ ] {{FEATURE_1}}</li>
+  <li>[ ] {{FEATURE_2}}</li>
+  <li>[ ] {{FEATURE_3}}</li>
+</ul>
+
+<h3>2.2 Non-Functional</h3>
+<ul>
+  <li><strong>Security:</strong> JWT auth, RBAC, OWASP Top 10 controls.</li>
+  <li><strong>Performance:</strong> p95 API &lt; 300ms, SPA TTI &lt; 3s on 3G Fast.</li>
+  <li><strong>Availability:</strong> {{SLO_AVAIL}}.</li>
+  <li><strong>Scalability:</strong> stateless API, horizontal scale.</li>
+  <li><strong>Compliance:</strong> {{COMPLIANCE_REQUIREMENTS}}.</li>
+</ul>
+
+<hr>
+
+<h2>3. Data Model</h2>
+<table border="1" cellspacing="0" cellpadding="6">
+  <thead><tr><th>Entity</th><th>Fields</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>User</td>
+      <td>id (UUID), email (unique), passwordHash, roles [USER|ADMIN], createdAt, updatedAt</td>
+      <td>BCrypt; email unique index</td>
+    </tr>
+    <tr>
+      <td>{{ENTITY_2}}</td>
+      <td>{{FIELDS}}</td>
+      <td>{{NOTES}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code>// JPA sample (Kotlin/Java style)
+@Entity
+class User {
+  @Id UUID id;
+  @Column(unique = true) String email;
+  String passwordHash;
+  @ElementCollection Set&lt;String&gt; roles;
+  Instant createdAt; Instant updatedAt;
+}</code></pre>
+
+<hr>
+
+<h2>4. API Design (REST)</h2>
+<p><strong>Base URL:</strong> <code>/api/v1</code></p>
+
+<table border="1" cellspacing="0" cellpadding="6">
+  <thead>
+    <tr><th>Method</th><th>Path</th><th>Auth</th><th>Req</th><th>Resp</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td><td>/auth/login</td><td>Public</td>
+      <td>{ email, password }</td><td>{ accessToken, refreshToken }</td>
+      <td>JWT; 401 on invalid creds</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/users/me</td><td>Bearer</td>
+      <td>-</td><td>{ id, email, roles }</td>
+      <td>Current user profile</td>
+    </tr>
+    <tr>
+      <td>GET</td><td>/{{RESOURCE}}</td><td>Bearer (role)</td>
+      <td>-</td><td>[{ ... }]</td>
+      <td>List with pagination ?page=&amp;size=</td>
+    </tr>
+  </tbody>
+</table>
+
+<details>
+  <summary><strong>OpenAPI (excerpt)</strong></summary>
+  <pre><code>{
+  "openapi": "3.0.3",
+  "info": { "title": "{{PROJECT_NAME}} API", "version": "1.0.0" },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": { "summary": "Login", "responses": { "200": { "description": "OK" } } }
+    }
+  },
+  "components": {
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } }
+  }
+}</code></pre>
+</details>
+
+<hr>
+
+<h2>5. Security</h2>
+<ul>
+  <li>Spring Security with JWT (access + refresh); rotate keys; short access TTL, longer refresh TTL.</li>
+  <li>Password hashing: BCrypt (Spring Security default), min 10 rounds.</li>
+  <li>RBAC via authorities/roles; method-level security with <code>@PreAuthorize</code>.</li>
+  <li>Input validation via Bean Validation (JSR-380) + global exception handler.</li>
+  <li>CORS whitelisting for SPA origins; CSRF disabled for stateless APIs.</li>
+  <li>Secrets via environment variables / Vault; never commit secrets.</li>
+  <li>OWASP: rate limit sensitive endpoints; sanitize logs; disable stack traces in prod.</li>
+</ul>
+
+<hr>
+
+<h2>6. Frontend (React)</h2>
+<ul>
+  <li><strong>Structure:</strong> <code>src/</code> → <code>app/</code> (routing), <code>pages/</code>, <code>components/</code>, <code>features/</code>, <code>api/</code>, <code>store/</code>, <code>styles/</code>.</li>
+  <li><strong>Routing:</strong> React Router; protected routes by auth guard.</li>
+  <li><strong>State:</strong> Redux Toolkit (slices) or Zustand; RTK Query for data fetching.</li>
+  <li><strong>Forms:</strong> React Hook Form + Zod/Yup for schema validation.</li>
+  <li><strong>UI:</strong> MUI or Tailwind; dark mode toggle (prefers-color-scheme).</li>
+  <li><strong>API Client:</strong> Axios with interceptors (attach JWT, handle 401/refresh).</li>
+  <li><strong>Env Vars:</strong> <code>VITE_API_URL</code> / <code>REACT_APP_API_URL</code>.</li>
+</ul>
+
+<pre><code>// Axios client (sketch)
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
+api.interceptors.request.use(cfg =&gt; {
+  const t = localStorage.getItem('accessToken');
+  if (t) cfg.headers.Authorization = `Bearer ${t}`;
+  return cfg;
+});</code></pre>
+
+<hr>
+
+<h2>7. Backend (Spring Boot)</h2>
+<ul>
+  <li><strong>Modules:</strong> <code>api</code>, <code>domain</code>, <code>persistence</code>, <code>security</code>.</li>
+  <li><strong>Layers:</strong> Controller → Service → Repository; DTOs + MapStruct for mapping.</li>
+  <li><strong>Validation:</strong> Bean Validation annotations + <code>@ControllerAdvice</code> error handler.</li>
+  <li><strong>Migrations:</strong> Flyway or Liquibase.</li>
+  <li><strong>Profiles:</strong> <code>dev</code>, <code>test</code>, <code>prod</code> (YAML config).</li>
+</ul>
+
+<pre><code># application-prod.yml (excerpt)
+server:
+  port: ${PORT:8080}
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:db}:${DB_PORT:5432}/${DB_NAME:app}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false</code></pre>
+
+<hr>
+
+<h2>8. DevOps & Environments</h2>
+<ul>
+  <li><strong>Local:</strong> docker-compose (db, api, spa, reverse proxy).</li>
+  <li><strong>CI:</strong> Build & test (backend: JUnit, frontend: Vitest/Jest), SAST, container scan.</li>
+  <li><strong>CD:</strong> Staging → Prod with blue/green or rolling deploys.</li>
+  <li><strong>Artifacts:</strong> Backend JAR/Docker image; Frontend static build.</li>
+</ul>
+
+<pre><code># docker-compose.yml (excerpt)
+services:
+  db:
+    image: postgres:16
+    environment: [ POSTGRES_DB=app, POSTGRES_USER=app, POSTGRES_PASSWORD=app ]
+  api:
+    build: ./api
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_HOST=db
+    depends_on: [ db ]
+  web:
+    build: ./web
+    environment: [ VITE_API_URL=http://localhost:8080/api/v1 ]</code></pre>
+
+<hr>
+
+<h2>9. Logging, Monitoring, & Metrics</h2>
+<ul>
+  <li><strong>API:</strong> Logback JSON logs; correlation IDs; error boundaries.</li>
+  <li><strong>Metrics:</strong> Spring Actuator + Prometheus format; health/readiness endpoints.</li>
+  <li><strong>Frontend:</strong> basic web vitals (LCP, CLS, FID) + error boundary logging.</li>
+</ul>
+
+<hr>
+
+<h2>10. Testing Strategy</h2>
+<ul>
+  <li><strong>Backend:</strong> Unit (JUnit5/Mockito), Slice tests, Testcontainers for DB, Contract tests.</li>
+  <li><strong>Frontend:</strong> Unit (Vitest/Jest), RTL for components, Cypress/Playwright E2E.</li>
+  <li><strong>Security:</strong> Authn/z tests, fuzz inputs, rate-limit tests.</li>
+</ul>
+
+<hr>
+
+<h2>11. Error Handling & API Conventions</h2>
+<p>Use RFC 7807 style errors.</p>
+<pre><code>{
+  "type": "https://docs.example.com/errors/validation",
+  "title": "Validation Failed",
+  "status": 400,
+  "errors": [{ "field": "email", "message": "must be a valid email" }]
+}</code></pre>
+
+<hr>
+
+<h2>12. Accessibility & i18n</h2>
+<ul>
+  <li>WCAG 2.1 AA targets; keyboard navigable, ARIA labels.</li>
+  <li>i18n via react-i18next; language switch persisted.</li>
+</ul>
+
+<hr>
+
+<h2>13. Acceptance Criteria Template</h2>
+<ul>
+  <li><strong>User Story:</strong> As a {{ROLE}}, I want {{GOAL}} so that {{VALUE}}.</li>
+  <li><strong>Given/When/Then:</strong>
+    <ul>
+      <li>Given {{PRECONDITION}}</li>
+      <li>When {{ACTION}}</li>
+      <li>Then {{EXPECTED_RESULT}}</li>
+    </ul>
+  </li>
+  <li><strong>Definition of Done:</strong> tests pass, coverage &gt;= {{COVERAGE_TARGET}}%, no sev-1 issues.</li>
+</ul>
+
+<hr>
+
+<h2>14. Risks & Assumptions</h2>
+<ul>
+  <li><strong>Risks:</strong> {{RISK_1}}, {{RISK_2}}</li>
+  <li><strong>Assumptions:</strong> {{ASSUMPTION_1}}, {{ASSUMPTION_2}}</li>
+  <li><strong>Out of Scope:</strong> {{OOS_ITEMS}}</li>
+</ul>
+
+<hr>
+
+<h2>15. Appendix</h2>
+<ul>
+  <li>API Pagination: <code>?page=&lt;int&gt;&amp;size=&lt;int&gt;&amp;sort=field,asc</code></li>
+  <li>HTTP Status mapping: 200/201/204, 400, 401, 403, 404, 409, 422, 429, 500.</li>
+  <li>Versioning: Semantic Versioning (API v1, v2…).</li>
+</ul>
