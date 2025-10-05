@@ -1,0 +1,3 @@
+ALTER TABLE comment
+ADD COLUMN username VARCHAR(255),
+ADD COLUMN fullname VARCHAR(255);
