@@ -1,6 +1,7 @@
 // Header.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { NotificationContext } from './NotificationContext';
 import logo from '../assets/logo.png';
 import './Header.css';
 
@@ -15,8 +16,21 @@ function Header() {
   });
 
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationRef = useRef(null);
+
   const username = localStorage.getItem('username') || 'User';
-  const role = localStorage.getItem('role'); // ✅ Get user role
+  const role = localStorage.getItem('role');
+
+  // ✅ Get notification context
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    clearAllNotifications
+  } = useContext(NotificationContext);
 
   useEffect(() => {
     const updateFromLocalStorage = () => {
@@ -49,7 +63,7 @@ function Header() {
       if (token) {
         try {
           const payload = JSON.parse(atob(token.split(".")[1]));
-          const exp = payload.exp * 1000; // exp is in seconds → convert to ms
+          const exp = payload.exp * 1000;
           if (Date.now() >= exp) {
             setSessionExpired(true);
           }
@@ -59,11 +73,27 @@ function Header() {
       }
     };
 
-    // Run check on mount + every 5 minutes
     checkToken();
     const interval = setInterval(checkToken, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // ✅ Close notification dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    };
+
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNotifications]);
 
   const getSrc = () => {
     if (!picture) return `http://localhost:8080/api/avatar?seed=${username}`;
@@ -80,14 +110,42 @@ function Header() {
     navigate('/profile');
   };
 
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const handleNotificationClick = (notification) => {
+    markAsRead(notification.id);
+    setShowNotifications(false);
+    // You can add navigation logic here based on notification type
+  };
+
+  const formatTimestamp = (timestamp) => {
+    const now = new Date();
+    const notifTime = new Date(timestamp);
+    const diffInMinutes = Math.floor((now - notifTime) / (1000 * 60));
+
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays}d ago`;
+
+    return notifTime.toLocaleDateString();
+  };
+
   const hideNav =
     location.pathname === '/blog/latest' ||
     location.pathname === '/login' ||
     location.pathname === '/signup' ||
     location.pathname === '/resetpassword' ||
     location.pathname === '/newpassword' ||
-    location.pathname === '/verify-email'||
-  /^\/blog\/\d+$/.test(location.pathname) || (location.pathname === '/blog' && location.search !== '');
+    location.pathname === '/verify-email' ||
+    /^\/blog\/\d+$/.test(location.pathname) ||
+    (location.pathname === '/blog' && location.search !== '');
 
   if (location.pathname === '/') return null;
 
@@ -116,37 +174,84 @@ function Header() {
             <div className="user-menu">
               <button className="btn outline" onClick={handleLogoff}>Logoff</button>
 
-              {/* Notification Bell Icon - Only for ADMIN */}
+              {/* ✅ Notification Bell Icon - Only for ADMIN */}
               {role === "ADMIN" && (
-                <div
-                  className="notification-bell"
-                  style={{
-                    position: 'relative',
-                    cursor: 'pointer',
-                    marginRight: '15px',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                  title="Notifications"
-                >
-                  <i className="far fa-bell" style={{ fontSize: '25px', color: '#333' }}></i>
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '-5px',
-                      right: '-8px',
-                      backgroundColor: '#dc3545',
-                      color: 'white',
-                      borderRadius: '50%',
-                      padding: '2px 6px',
-                      fontSize: '11px',
-                      fontWeight: 'bold',
-                      minWidth: '18px',
-                      textAlign: 'center'
-                    }}
+                <div className="notification-container" ref={notificationRef}>
+                  <div
+                    className="notification-bell"
+                    onClick={toggleNotifications}
+                    title="Notifications"
                   >
-                    5
-                  </span>
+                    <i className="far fa-bell"></i>
+                    {unreadCount > 0 && (
+                      <span className="notification-badge">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* ✅ Notification Dropdown */}
+                  {showNotifications && (
+                    <div className="notification-dropdown">
+                      <div className="notification-header">
+                        <h6>Notifications ({unreadCount} unread)</h6>
+                        <div className="notification-actions">
+                          {notifications.length > 0 && (
+                            <>
+                              <button
+                                onClick={markAllAsRead}
+                                className="mark-all-read"
+                                title="Mark all as read"
+                              >
+                                <i className="fas fa-check-double"></i>
+                              </button>
+                              <button
+                                onClick={clearAllNotifications}
+                                className="clear-all"
+                                title="Clear all"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="notification-list">
+                        {notifications.length === 0 ? (
+                          <div className="no-notifications">
+                            <i className="far fa-bell-slash"></i>
+                            <p>No notifications</p>
+                          </div>
+                        ) : (
+                          notifications.map((notif) => (
+                            <div
+                              key={notif.id}
+                              className={`notification-item ${!notif.read ? 'unread' : ''}`}
+                              onClick={() => handleNotificationClick(notif)}
+                            >
+                              <div className="notification-content">
+                                <p className="notification-message">{notif.message}</p>
+                                <span className="notification-time">
+                                  {formatTimestamp(notif.timestamp)}
+                                </span>
+                              </div>
+                              <button
+                                className="delete-notification"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  deleteNotification(notif.id);
+                                }}
+                                title="Delete"
+                              >
+                                <i className="fas fa-times"></i>
+                              </button>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 

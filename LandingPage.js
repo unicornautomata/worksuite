@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './LandingPage.css';
 import logo from '../assets/logo.png';
 import heroImage from '../assets/image.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const role = localStorage.getItem("role");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleDropdownItemClick = (path) => {
+    setIsDropdownOpen(false);
+    navigate(path);
+  };
+
+  const toggleDropdown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <motion.div
@@ -36,12 +62,30 @@ const LandingPage = () => {
 
             {/* Blog menu with role check */}
             {role === "ADMIN" ? (
-              <div className="dropdown">
-                <button className="dropbtn">Blog ▾</button>
-                <div className="dropdown-content">
-                  <Link to="/blog/latest">View Blog</Link>
-                  <Link to="/manageblog">Manage Blog</Link>
-                </div>
+              <div className="blog-dropdown" ref={dropdownRef}>
+                <button
+                  className="blog-dropbtn"
+                  onClick={toggleDropdown}
+                  type="button"
+                >
+                  Blog ▾
+                </button>
+                {isDropdownOpen && (
+                  <div className="blog-dropdown-content">
+                    <button
+                      onClick={() => handleDropdownItemClick('/blog/latest')}
+                      type="button"
+                    >
+                      View Blog
+                    </button>
+                    <button
+                      onClick={() => handleDropdownItemClick('/manageblog')}
+                      type="button"
+                    >
+                      Manage Blog
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <Link to="/blog/latest">Blog</Link>
@@ -65,7 +109,6 @@ const LandingPage = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
         />
-
         <motion.div
           className="hero-text"
           initial={{ opacity: 0, y: 50 }}
