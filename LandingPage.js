@@ -6,7 +6,7 @@ import heroImage from '../assets/image.png';
 import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
-  const role = localStorage.getItem("role"); // ✅ get user role
+  const role = localStorage.getItem("role");
 
   return (
     <motion.div
@@ -16,6 +16,7 @@ const LandingPage = () => {
       transition={{ duration: 1.2, ease: 'easeOut' }}
     >
       <header className="landing-header">
+        {/* Logo Section - Left */}
         <div className="logo-section">
           <img src={logo} alt="WorkSuite Logo" className="logo-icon" />
           <div>
@@ -23,28 +24,35 @@ const LandingPage = () => {
             <p className="tagline">Where teams get work done.</p>
           </div>
         </div>
-        <nav className="nav-links">
-          <Link to="/product">Product</Link>
-          <Link to="/solutions">Solutions</Link>
-          <Link to="/resources">Resources</Link>
-          <Link to="/pricing">Pricing</Link>
 
-          {/* Blog menu with role check */}
-          {role === "ADMIN" ? (
-            <div className="dropdown">
-              <button className="dropbtn">Blog ▾</button>
-              <div className="dropdown-content">
-                <Link to="/blog/latest">View Blog</Link>
-                <Link to="/manageblog">Manage Blog</Link>
+        {/* Right Section - Nav Links + Buttons */}
+        <div className="header-right">
+          {/* Nav Links */}
+          <nav className="nav-links">
+            <Link to="/product">Product</Link>
+            <Link to="/solutions">Solutions</Link>
+            <Link to="/resources">Resources</Link>
+            <Link to="/pricing">Pricing</Link>
+
+            {/* Blog menu with role check */}
+            {role === "ADMIN" ? (
+              <div className="dropdown">
+                <button className="dropbtn">Blog ▾</button>
+                <div className="dropdown-content">
+                  <Link to="/blog/latest">View Blog</Link>
+                  <Link to="/manageblog">Manage Blog</Link>
+                </div>
               </div>
-            </div>
-          ) : (
-            <Link to="/blog/latest">Blog</Link>
-          )}
-        </nav>
-        <div className="nav-buttons">
-          <Link to="/login" className="btn outline">Login</Link>
-          <Link to="/signup" className="btn">Get Started</Link>
+            ) : (
+              <Link to="/blog/latest">Blog</Link>
+            )}
+          </nav>
+
+          {/* Action Buttons */}
+          <div className="nav-buttons">
+            <Link to="/login" className="btn outline">Login</Link>
+            <Link to="/signup" className="btn">Get Started</Link>
+          </div>
         </div>
       </header>
 
@@ -57,6 +65,7 @@ const LandingPage = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
         />
+
         <motion.div
           className="hero-text"
           initial={{ opacity: 0, y: 50 }}
@@ -67,6 +76,8 @@ const LandingPage = () => {
           <p>
             Tired of messy task lists, confusing threads, and scattered project updates?
             WorkSuite is here to bring clarity, structure, and collaboration back to your workflow.
+          </p>
+          <p>
             ✅ Create and assign tasks with ease<br />
             ✅ Track progress across teams in real-time<br />
             ✅ Organize projects, deadlines, and ticketing in one place<br />
@@ -74,10 +85,12 @@ const LandingPage = () => {
           </p>
           <p>
             Whether you're managing a startup, leading a remote team, or just want a better way to stay organized —
-            WorkSuite helps you plan smarter, work better, and get more done. 🛠️ Work smarter, not harder.
-            Try WorkSuite today.
+            WorkSuite helps you plan smarter, work better, and get more done.
           </p>
-          <a href="/signup" className="btn big">Get Started</a>
+          <p>
+            🛠️ Work smarter, not harder. Try WorkSuite today.
+          </p>
+          <Link to="/signup" className="btn big">Get Started</Link>
         </motion.div>
       </main>
     </motion.div>

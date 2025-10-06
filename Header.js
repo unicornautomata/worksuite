@@ -16,6 +16,7 @@ function Header() {
 
   const [sessionExpired, setSessionExpired] = useState(false);
   const username = localStorage.getItem('username') || 'User';
+  const role = localStorage.getItem('role'); // ✅ Get user role
 
   useEffect(() => {
     const updateFromLocalStorage = () => {
@@ -115,37 +116,39 @@ function Header() {
             <div className="user-menu">
               <button className="btn outline" onClick={handleLogoff}>Logoff</button>
 
-              {/* Notification Bell Icon */}
-              <div
-                className="notification-bell"
-                style={{
-                  position: 'relative',
-                  cursor: 'pointer',
-                  marginRight: '15px',
-                  display: 'flex',
-                  alignItems: 'center'
-                }}
-                title="Notifications"
-              >
-                <i className="far fa-bell" style={{ fontSize: '25px', color: '#333' }}></i>
-                <span
+              {/* Notification Bell Icon - Only for ADMIN */}
+              {role === "ADMIN" && (
+                <div
+                  className="notification-bell"
                   style={{
-                    position: 'absolute',
-                    top: '-5px',
-                    right: '-8px',
-                    backgroundColor: '#dc3545',
-                    color: 'white',
-                    borderRadius: '50%',
-                    padding: '2px 6px',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    minWidth: '18px',
-                    textAlign: 'center'
+                    position: 'relative',
+                    cursor: 'pointer',
+                    marginRight: '15px',
+                    display: 'flex',
+                    alignItems: 'center'
                   }}
+                  title="Notifications"
                 >
-                  5
-                </span>
-              </div>
+                  <i className="far fa-bell" style={{ fontSize: '25px', color: '#333' }}></i>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '-5px',
+                      right: '-8px',
+                      backgroundColor: '#dc3545',
+                      color: 'white',
+                      borderRadius: '50%',
+                      padding: '2px 6px',
+                      fontSize: '11px',
+                      fontWeight: 'bold',
+                      minWidth: '18px',
+                      textAlign: 'center'
+                    }}
+                  >
+                    5
+                  </span>
+                </div>
+              )}
 
               <div className="user-avatar" onClick={handleProfileClick} title={username}>
                 <img src={getSrc()} alt="user" />
