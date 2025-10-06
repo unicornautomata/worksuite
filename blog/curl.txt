@@ -1,0 +1,36 @@
+curl -v -X POST http://localhost:8083/api/blogs -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInVzZXJpZCI6MSwicm9sZSI6IkFETUlOIiwiYWNudHlwIjoiUEVSU09OQUwiLCJpYXQiOjE3NTgzMjY0ODYsImV4cCI6MTc1ODMzMDA4Nn0.pLGggUfdzsd_citTGTWo7g4RIb5DnHQtv7yKJIcialqjOSGK6Z1csd-li8Zje3YFwtg5Dq1YwRYdHx55ewLph4vJ0oWLyekzPY3h59S6YpHtX_53ZWs7dNnpVgV8N6EnCO2702c006WS7b1JYz4mn_2rd8DkKTtFuLLzf-tQjFNDe2sP5RWo0YpBoZMBlsKMz74MaZ6wZycPAB1RgsO_1cirHFYHYnKDJD5lw7HWkb5fbdqXsTWj7BjphZzTW7C_lRSKeDupAHEzh5Qaozb_Ja2Lg3lch0kbmzZJJ5Tex3PDRQhGzQgYHCvJ26w7thesR8jPMOodj-txoO8eYamQHA" -d "{\"title\":\"My Second Blog\",\"content\":\"This is the content of my blog 2 post.\",\"summary\":\"This is a short summary of my second blog.\",\"labels\":\"spring,java,jwt\"}"
+
+curl -v  -X GET "http://localhost:8083/api/blogs/public/by-label?label=lolz"
+
+curl -X GET "http://localhost:8083/api/blogs/public/labels-with-counts"
+
+curl -v -X GET http://localhost:8083/api/blogs/1
+
+curl -v -X GET http://localhost:8083/api/blogs/latest
+
+powershell:
+curl http://localhost:8083/api/blogs/latest | ConvertFrom-Json | Format-List
+
+curl -v -X GET http://localhost:8083/api/blogs
+
+curl -v -X PATCH http://localhost:8083/api/blogs/1 ^
+ -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInVzZXJpZCI6MSwicm9sZSI6IkFETUlOIiwiYWNudHlwIjoiUEVSU09OQUwiLCJpYXQiOjE3NTg1MTcxNzMsImV4cCI6MTc1ODUyMDc3M30.tfbHIMieAgFBwgnEnDUqkEacLBi0nZYROv2eqi8lSxTUWPwJh3SLKuMTsYCpErp576ys3NmwKz4FtbS3BjW-eiQBkue8DScUJRY3ZZFDu-N9IU9cj0LR7--kJ1fDnq82ehnDGrglxx-PyjQbkkVoo6C54j7QOgAVKIPYX5YqDYH5RHxkdIt4iFbSZ_lER_3LlMkjhYr3Y-fXuv6tgxoM_Lpz7oapCExWTIf6FVTpAI6j6DiahYakdEn3ZiZWPTy4WvCQV5KWhjh3fRflJIfmEARLb5XpOx06OlVnaWbKEcpwk6v5VWmyRC2sGLSpNGz5k7GtV3kD2nlfoDkFpZA-UA" ^
+ -H "Content-Type: application/json" ^
+ -d "{\"title\":\"My first Blog\"}"
+
+curl -v -X POST http://localhost:8083/api/blogs/1/like -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInVzZXJpZCI6MSwicm9sZSI6IkFETUlOIiwiYWNudHlwIjoiUEVSU09OQUwiLCJpYXQiOjE3NTgzMjY0ODYsImV4cCI6MTc1ODMzMDA4Nn0.pLGggUfdzsd_citTGTWo7g4RIb5DnHQtv7yKJIcialqjOSGK6Z1csd-li8Zje3YFwtg5Dq1YwRYdHx55ewLph4vJ0oWLyekzPY3h59S6YpHtX_53ZWs7dNnpVgV8N6EnCO2702c006WS7b1JYz4mn_2rd8DkKTtFuLLzf-tQjFNDe2sP5RWo0YpBoZMBlsKMz74MaZ6wZycPAB1RgsO_1cirHFYHYnKDJD5lw7HWkb5fbdqXsTWj7BjphZzTW7C_lRSKeDupAHEzh5Qaozb_Ja2Lg3lch0kbmzZJJ5Tex3PDRQhGzQgYHCvJ26w7thesR8jPMOodj-txoO8eYamQHA"
+
+curl -v -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInVzZXJpZCI6MSwicm9sZSI6IkFETUlOIiwiYWNudHlwIjoiUEVSU09OQUwiLCJpYXQiOjE3NTg0MjI2OTgsImV4cCI6MTc1ODQyNjI5OH0.RM3KYph3uyiYxndHT1Glk80YBc9SXhvz19WJZesP7-Ios2h9gMPOQfRq20I5mAL1c2qKVEFvOSOGgw3h_qklfXo5FhJDEwVpKltdNHU-wnGDFzZNfRoUjIfg8Cvas8YtJ_cfmOuzuI_aX5b1N1j5aufBsgO3ezweLPrnGkjATs8JEk3kfJezMz7IAbJUQZZ13VMs8wo43CnBf7jxZjbhcWklZuiCPtCiqtjqySXyFRIs0rkGe4SE5l5s6xjYofu5_9L6xYsfEZ3qrBzLIASSq2qjDzh7DjsPIEYAZuXEKYb8dv8y10i0YSpDr5F9LndZd6cUpsB7OLsI91y9MT9rMw" http://localhost:8083/api/blogs/summaries
+
+curl -X POST http://localhost:8083/api/comments/{blogId} \
+  -H "Authorization: Bearer your_jwt_token_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "comment": "This is a test comment on the blog post."
+  }'
+
+  curl -X POST http://localhost:8083/api/comments/1/approve -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInVzZXJpZCI6MSwicm9sZSI6IkFETUlOIiwiYWNudHlwIjoiUEVSU09OQUwiLCJpYXQiOjE3NTkzMTA3MzYsImV4cCI6MTc1OTMxNzkzNn0.Au-VdqtsbHKMOigGx-bIedlyE78JoSl3kVDe8SDx9i5r-IZnxIr9P9icTP5aFheJVYnPNuFg8GrqqmRzDC7aP_I8n2tLHvXufZxgPiD2dvNBkzpB2yRfQAsw2G2Q1aFzOfzh3S95xzmDtawhkK7r6GHJpKcCvDVJBowzW6QePJTSfphNn9yocIJkcC-UoIGyMzdvvYlRPSmUCvUC--5M8oayzunfzMtdQm5JddtA7vvZBggxhvGhzpc7iKKer8SpBd9XL9NGBID14dihP8oXlnVF-TOUV20pYzNHX_873Yrh35E90w91iuFedQDZJ-wxyTm6UeoCNkUomrHRhFxcvHA" -H "Content-Type: application/json"
+
+  curl -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsInVzZXJpZCI6MSwicm9sZSI6IkFETUlOIiwiYWNudHlwIjoiUEVSU09OQUwiLCJpYXQiOjE3NTkzMTA3MzYsImV4cCI6MTc1OTMxNzkzNn0.Au-VdqtsbHKMOigGx-bIedlyE78JoSl3kVDe8SDx9i5r-IZnxIr9P9icTP5aFheJVYnPNuFg8GrqqmRzDC7aP_I8n2tLHvXufZxgPiD2dvNBkzpB2yRfQAsw2G2Q1aFzOfzh3S95xzmDtawhkK7r6GHJpKcCvDVJBowzW6QePJTSfphNn9yocIJkcC-UoIGyMzdvvYlRPSmUCvUC--5M8oayzunfzMtdQm5JddtA7vvZBggxhvGhzpc7iKKer8SpBd9XL9NGBID14dihP8oXlnVF-TOUV20pYzNHX_873Yrh35E90w91iuFedQDZJ-wxyTm6UeoCNkUomrHRhFxcvHA" http://localhost:8083/api/comments/blog/1/all
+
+  curl http://localhost:8083/api/comments/blog/1
