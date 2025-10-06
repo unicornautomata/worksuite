@@ -1,0 +1,425 @@
+/* Header.css - Latest Version */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-section a {
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 13px;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.nav-section {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #34495e;
+  font-weight: 500;
+  font-size: 15px;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-links a:hover {
+  color: #3498db;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3498db;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn {
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn.outline {
+  background-color: transparent;
+  border: 2px solid #3498db;
+  color: #3498db;
+}
+
+.btn.outline:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+/* Notification Bell Styles */
+.notification-bell {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.notification-bell:hover {
+  background-color: #f0f0f0;
+}
+
+.notification-bell i {
+  font-size: 24px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.notification-bell:hover i {
+  color: #3498db;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* User Avatar Styles */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.user-avatar:hover {
+  border-color: #3498db;
+  transform: scale(1.05);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal.fade.show.d-block {
+  display: flex !important;
+}
+
+.modal-dialog {
+  max-width: 500px;
+  width: 90%;
+  margin: 1.75rem auto;
+}
+
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3.5rem);
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.modal-body {
+  padding: 20px;
+  color: #555;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background-color: #f8f9fa;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .nav-section {
+    gap: 20px;
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav-links {
+    gap: 15px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+  }
+
+  .user-menu {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 20px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-name {
+    font-size: 18px;
+  }
+
+  .tagline {
+    font-size: 11px;
+  }
+
+  .nav-section {
+    gap: 15px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .user-menu {
+    gap: 10px;
+  }
+
+  .btn.outline {
+    padding: 6px 15px;
+    font-size: 13px;
+  }
+
+  .notification-bell,
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .notification-bell i {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 15px;
+  }
+
+  .logo-section {
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .brand-name {
+    font-size: 16px;
+  }
+
+  .tagline {
+    font-size: 10px;
+  }
+
+  .notification-bell,
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+  }
+
+  .notification-bell i {
+    font-size: 20px;
+  }
+
+  .btn.outline {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem;
+    width: calc(100% - 1rem);
+  }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .header {
+    background-color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .brand-name {
+    color: #ffffff;
+  }
+
+  .tagline {
+    color: #b0b0b0;
+  }
+
+  .nav-links a {
+    color: #e0e0e0;
+  }
+
+  .notification-bell i {
+    color: #e0e0e0;
+  }
+
+  .notification-bell:hover {
+    background-color: #2a2a2a;
+  }
+
+  .user-avatar {
+    border-color: #444;
+  }
+}
+
+/* Accessibility improvements */
+.notification-bell:focus,
+.user-avatar:focus,
+.btn:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .header {
+    box-shadow: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .user-menu,
+  .notification-bell {
+    display: none;
+  }
+}

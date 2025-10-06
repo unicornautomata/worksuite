@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Fix Summernote toolbar buttons */
+.note-editor .btn {
+  background-color: transparent !important;
+  border: none !important;
+  color: #444 !important;
+  padding: 4px 6px !important;
+  font-size: 12px !important;
+}
+
+.note-editor .btn:hover {
+  background-color: #f0f0f0 !important;
+  color: #000 !important;
+  border-radius: 4px;
+}
+
+/* Dropdown caret fix */
+.note-editor .dropdown-toggle::after {
+  display: none;
+}
+.btn-toolbar-gray {
+  background-color: #6c757d !important;  /* solid gray */
+  border-color: #6c757d !important;
+  color: #fff !important;
+}
+
+.btn-toolbar-gray:hover,
+.btn-toolbar-gray:focus,
+.btn-toolbar-gray:active {
+  background-color: #5a6268 !important;  /* darker gray on hover/click */
+  border-color: #545b62 !important;
+  color: #fff !important;
+}
+
+.task-list-panel {
+  z-index: 1050; /* Keep above content */
+}
+
+@media (max-width: 767.98px) {
+  .task-list-panel {
+    position: fixed;
+    top: 140px;
+    left: 0;
+    width: 25%;   /* reduced from 80% to 50% */
+    height: 100%;
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out; /* smooth animation */
+    transform: translateX(0); /* ensure it's visible */
+  }
+}

@@ -1,0 +1,185 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f3f4f6;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+/* Container */
+.todo-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Input */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button */
+button {
+  padding: 10px 18px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+/* To-do list styles */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f5e9;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+
+li span {
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+li span.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+li button {
+  background: #f44336;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+li button:hover {
+  background: #d32f2f;
+}
+
+/* Auth form */
+.auth-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.auth-form button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.auth-container p {
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.info {
+  margin-top: 12px;
+  color: #333;
+}
+.card-body {
+  font-size: 1.05rem; /* adjust as needed */
+}
+
+.card-title {
+  font-size: 1.25rem; /* titles slightly larger */
+}
+
+/* Input boxes (form controls) */
+.form-control-sm {
+  font-size: 1rem; /* increase input text size */
+  padding: 0.5rem 0.75rem; /* give more breathing room */
+}
+
+textarea.form-control-sm {
+  font-size: 1rem;
+}
+
+/* Ensure blog title is left aligned */
+.text-left {
+  text-align: left !important;
+}
+
+/* Remove background color from categories & labels */
+.plain-list li {
+  background: transparent !important;
+  padding: 4px 0;
+}
+
+/* Sidebar section titles */
+.sidebar-title {
+  font-weight: bold;
+  background-color: #f5f5f5; /* light gray background */
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid #0084ff; /* highlight bar */
+  margin-top: 2rem; /* top margin of ~2 lines */
+}
+
+/* Compress spacing in the sidebar */
+.sidebar-title {
+  margin-top: 10px !important;   /* reduce top margin */
+  margin-bottom: 6px !important; /* tighten spacing under the title */
+}
+
+.plain-list li {
+  margin-bottom: 2px; /* smaller gap between list items */
+}
+
+/* Sidebar links - make them look like plain text */
+.sidebar-title + .plain-list a {
+  text-decoration: none; /* remove underline */
+  color: #000;           /* black text */
+}
+
+.sidebar-title + .plain-list a:hover {
+  color: #007bff;        /* optional: make it blue on hover */
+}
