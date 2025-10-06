@@ -1,4 +1,3 @@
-// Header.js
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { NotificationContext } from './NotificationContext';
@@ -22,7 +21,6 @@ function Header() {
   const username = localStorage.getItem('username') || 'User';
   const role = localStorage.getItem('role');
 
-  // ✅ Get notification context
   const {
     notifications,
     unreadCount,
@@ -56,7 +54,7 @@ function Header() {
     };
   }, []);
 
-  // ✅ Check token expiration
+  // ✅ Token expiration checker
   useEffect(() => {
     const checkToken = () => {
       const token = localStorage.getItem("token");
@@ -114,10 +112,31 @@ function Header() {
     setShowNotifications(!showNotifications);
   };
 
-  const handleNotificationClick = (notification) => {
+  // ✅ When a comment notification is clicked → open external manageblog link
+  const handleNotificationClick = (e, notification) => {
+    e.preventDefault();
     markAsRead(notification.id);
-    setShowNotifications(false);
-    // You can add navigation logic here based on notification type
+
+    console.log('Notification clicked:', notification);
+
+    // Infer type from message if not provided
+    const type = notification.type?.toLowerCase() ||
+      (notification.message?.toLowerCase().includes('commented on blog') ? 'comment' : '');
+
+    if (type === 'comment') {
+      console.log('Navigating to /manageblog');
+      setShowNotifications(false);
+      setTimeout(() => navigate('/manageblog'), 50);
+    } else {
+      console.log('Notification not of type comment');
+    }
+  };
+
+
+  const handleDeleteClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deleteNotification(id);
   };
 
   const formatTimestamp = (timestamp) => {
@@ -127,15 +146,27 @@ function Header() {
 
     if (diffInMinutes < 1) return 'Just now';
     if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours}h ago`;
-
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 7) return `${diffInDays}d ago`;
 
     return notifTime.toLocaleDateString();
   };
+
+  const getNotificationIcon = (type) => {
+    switch(type) {
+      case 'comment': return 'fas fa-comment';
+      case 'blog': return 'fas fa-file-alt';
+      case 'user':
+      case 'signup':
+      case 'login': return 'fas fa-user-plus';
+      default: return 'fas fa-bell';
+    }
+  };
+
+  const isClickable = (notification) => notification.type === 'comment';
+  const hasCommentNotifications = notifications.some(n => n.type === 'comment');
 
   const hideNav =
     location.pathname === '/blog/latest' ||
@@ -171,10 +202,11 @@ function Header() {
               <Link to="/team">Team</Link>
               <Link to="/dashboard">Dashboard</Link>
             </div>
+
             <div className="user-menu">
               <button className="btn outline" onClick={handleLogoff}>Logoff</button>
 
-              {/* ✅ Notification Bell Icon - Only for ADMIN */}
+              {/* ✅ Notification Bell Icon - ADMIN only */}
               {role === "ADMIN" && (
                 <div className="notification-container" ref={notificationRef}>
                   <div
@@ -199,14 +231,20 @@ function Header() {
                           {notifications.length > 0 && (
                             <>
                               <button
-                                onClick={markAllAsRead}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  markAllAsRead();
+                                }}
                                 className="mark-all-read"
                                 title="Mark all as read"
                               >
                                 <i className="fas fa-check-double"></i>
                               </button>
                               <button
-                                onClick={clearAllNotifications}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  clearAllNotifications();
+                                }}
                                 className="clear-all"
                                 title="Clear all"
                               >
@@ -227,21 +265,26 @@ function Header() {
                           notifications.map((notif) => (
                             <div
                               key={notif.id}
-                              className={`notification-item ${!notif.read ? 'unread' : ''}`}
-                              onClick={() => handleNotificationClick(notif)}
+                              className={`notification-item ${!notif.read ? 'unread' : ''} ${isClickable(notif) ? 'clickable' : 'non-clickable'}`}
+                              onClick={(e) => handleNotificationClick(e, notif)}
                             >
+                              <div className="notification-icon">
+                                <i className={getNotificationIcon(notif.type)}></i>
+                              </div>
                               <div className="notification-content">
-                                <p className="notification-message">{notif.message}</p>
+                                <p className="notification-message">
+                                  {notif.message}
+                                  {isClickable(notif) && (
+                                    <span className="clickable-hint"> 👆 Click to manage</span>
+                                  )}
+                                </p>
                                 <span className="notification-time">
                                   {formatTimestamp(notif.timestamp)}
                                 </span>
                               </div>
                               <button
                                 className="delete-notification"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  deleteNotification(notif.id);
-                                }}
+                                onClick={(e) => handleDeleteClick(e, notif.id)}
                                 title="Delete"
                               >
                                 <i className="fas fa-times"></i>
@@ -250,6 +293,22 @@ function Header() {
                           ))
                         )}
                       </div>
+
+                      {/* ✅ Footer link - opens manageblog page */}
+                      {hasCommentNotifications && (
+                        <div className="notification-footer">
+                          <button
+                            className="manage-blog-link"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowNotifications(false);
+                              window.open("http://localhost:5035/manageblog", "_blank");
+                            }}
+                          >
+                            <i className="fas fa-cog"></i> Manage Blog Comments
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
