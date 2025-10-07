@@ -5,6 +5,7 @@ com\project\todo\controller\TodoController.class
 com\project\todo\TodoApplication.class
 com\project\todo\dto\UserDTO.class
 com\project\todo\model\User.class
+SwaggerConfig.class
 com\project\todo\repository\VerificationTokenRepository.class
 com\project\todo\service\EmailService.class
 com\project\todo\service\CustomUserDetailsService.class

@@ -1,6 +1,7 @@
 c:\todo_app_dev\backend\src\main\java\com\project\todo\config\AppConstants.java
 c:\todo_app_dev\backend\src\main\java\com\project\todo\config\KeyManager.java
 c:\todo_app_dev\backend\src\main\java\com\project\todo\config\SecurityConfig.java
+c:\todo_app_dev\backend\src\main\java\com\project\todo\config\SwaggerConfig.java
 c:\todo_app_dev\backend\src\main\java\com\project\todo\config\WebSocketConfig.java
 c:\todo_app_dev\backend\src\main\java\com\project\todo\controller\AdminNotificationController.java
 c:\todo_app_dev\backend\src\main\java\com\project\todo\controller\AuthController.java

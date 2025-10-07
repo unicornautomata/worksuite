@@ -12,6 +12,7 @@ public class UserDTO implements Serializable {
     private String acntyp;
     private boolean emailVerified;
     private String education;
+    private String occupation;
     private String skills;
     private String address;
     private String notes;
@@ -20,7 +21,7 @@ public class UserDTO implements Serializable {
 
     // ✅ Full constructor
     public UserDTO(Long id, String username, String password, String email, String fullname,
-                   String role, String acntyp, boolean emailVerified, String education,
+                   String role, String acntyp, boolean emailVerified, String education, String occupation,
                    String skills, String address, String notes, String experience, String picture) {
         this.id = id;
         this.username = username;
@@ -31,6 +32,7 @@ public class UserDTO implements Serializable {
         this.acntyp = acntyp;
         this.emailVerified = emailVerified;
         this.education = education;
+        this.occupation = occupation;
         this.skills = skills;
         this.address = address;
         this.notes = notes;
@@ -48,6 +50,7 @@ public class UserDTO implements Serializable {
     public String getAcntyp() { return acntyp; }
     public boolean isEmailVerified() { return emailVerified; }
     public String getEducation() { return education; }
+    public String getOccupation() { return  occupation; }
     public String getSkills() { return skills; }
     public String getAddress() { return address; }
     public String getNotes() { return notes; }
@@ -66,6 +69,7 @@ public class UserDTO implements Serializable {
             user.getAcntyp() != null ? user.getAcntyp().name() : null,
             user.isEmailVerified(),
             user.getEducation(),
+            user.getOccupation(),
             user.getSkills(),
             user.getAddress(),
             user.getNotes(),

@@ -38,6 +38,7 @@ public class SecurityConfig {
                     "/api/auth/resetpassword",
                     "/api/auth/updatepassword",
                     "/api/auth/checkemail",
+                    "/api/auth/resend-verification",
                     "/auth/publicKey",
                     "/ws/**",
                     "/ws/info/**",

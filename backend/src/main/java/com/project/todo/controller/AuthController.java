@@ -396,17 +396,20 @@ if (user == null) {
             todoProducer.publishTodoEvent("user.login", username);
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Login successful!",
-                    "token", token,
-                    "userInfo", user.getUsername() + ":" + user.getRole() + ":" + (user.getEducation() != null ? user.getEducation() : ""),
-                    "email", user.getEmail(),
-                    "fullname", user.getFullname() != null ? user.getFullname() : "",
-                    "skills", user.getSkills() != null ? user.getSkills() : "",
-                    "address", user.getAddress() != null ? user.getAddress() : "",
-                    "notes", user.getNotes() != null ? user.getNotes() : "",
-                    "experience", user.getExperience() != null ? user.getExperience() : "",
-                    "picture", user.getPicture() != null ? user.getPicture() : ""
+                "message", "Login successful!",
+                "token", token,
+                "userInfo", user.getUsername() + ":" + user.getRole() + ":" +
+                             (user.getEducation() != null ? user.getEducation() : "") + ":" +
+                             (user.getOccupation() != null ? user.getOccupation() : ""),
+                "email", user.getEmail(),
+                "fullname", user.getFullname() != null ? user.getFullname() : "",
+                "skills", user.getSkills() != null ? user.getSkills() : "",
+                "address", user.getAddress() != null ? user.getAddress() : "",
+                "notes", user.getNotes() != null ? user.getNotes() : "",
+                "experience", user.getExperience() != null ? user.getExperience() : "",
+                "picture", user.getPicture() != null ? user.getPicture() : ""
             ));
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Login failed: " + e.getMessage()));

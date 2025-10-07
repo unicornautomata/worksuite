@@ -22,6 +22,7 @@ import BlogListByCategory from "./components/BlogListByCategory";
 import BlogListBySearch from "./components/BlogListBySearch";
 import AdminNotifications from "./components/AdminNotifications";
 import { NotificationProvider } from "./components/NotificationContext";
+import Resend_Verification_Email from "./components/Resend_Verification_Email";
 import './App.css';
 
 // ✅ New wrapper component to handle query parameters
@@ -60,6 +61,7 @@ function AppWrapper() {
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/resetpassword" element={<ResetPasswordPage />} />
           <Route path="/newpassword" element={<NewPasswordPage />} />
+          <Route path="/resendverification" element={<Resend_Verification_Email />} />
 
           {/* ✅ Blog route with query parameter handling */}
           <Route path="/blog" element={<BlogRouter />} />

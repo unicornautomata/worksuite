@@ -175,6 +175,7 @@ function Header() {
     location.pathname === '/resetpassword' ||
     location.pathname === '/newpassword' ||
     location.pathname === '/verify-email' ||
+    location.pathname === "/resendverification" ||
     /^\/blog\/\d+$/.test(location.pathname) ||
     (location.pathname === '/blog' && location.search !== '');
 
